@@ -25,6 +25,7 @@ class EntryListsCompetition
                         'type' => 'datetime'
                     ),
             )
+
         ) );
     }
 }
