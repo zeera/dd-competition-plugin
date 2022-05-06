@@ -71,24 +71,13 @@ class CompetitionProcess extends AdminHelper
         }
     }
 
-    public static function validateAnswer( $cart_item_key,  $product_id,  $quantity,  $variation_id,  $variation,  $cart_item_data )
-    {
+    public static function validateAnswer( $passed ) {
         $answer = $_POST['competition_answer'];
-
-        if( !$answer ) {
-            add_action( 'woocommerce_after_add_to_cart_button', [self::class, 'displayNotice'] );
+        if ( !$answer ) {
+            wc_add_notice( __( ' Please select an answer!', 'woocommerce' ), 'error' );
+            $passed = false;
         }
-    }
-
-    public static function displayNotice()
-    {
-        ?>
-            <div class="competition-notice">
-                <div class="alert alert-danger" role="alert">
-                    Please select an answer!
-                </div>
-            </div>
-        <?php
+        return $passed;
     }
 
     public static function addCartItemData ( $cartItemData, $productId, $variationId ) {
@@ -120,5 +109,13 @@ class CompetitionProcess extends AdminHelper
         if ( isset( $values['_my_competition_answer'] ) ) {
             wc_add_order_item_meta( $itemId, '_my_competition_answer', $values['_my_competition_answer'] );
         }
+    }
+
+    public static function filterWcOrderItemDisplayMetaKey( $display_key, $meta, $item ) {
+        // Change displayed label for specific order item meta key
+        if( is_admin() && $item->get_type() === 'line_item' && $meta->key === '_my_competition_answer' ) {
+            $display_key = __("Supplier", "woocommerce" );
+        }
+        return $display_key;
     }
 }
