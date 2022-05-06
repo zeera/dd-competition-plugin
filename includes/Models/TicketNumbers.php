@@ -156,4 +156,9 @@ class TicketNumbers extends TableHelper
         $ticketData = $this->queryWp("SELECT * FROM `#prefix_ticket_numbers` WHERE `product_id` = '%s' AND `order_id` = '%s' AND `item_id` = '%s'", [$product_id, $order_id, $item_id]);
         return $ticketData;
     }
+
+    public function getTotalBoughtPerUser($product_id, $user_id) {
+        $ticketData = $this->queryWp("SELECT COUNT(*) as `total` FROM `#prefix_ticket_numbers` WHERE `product_id` = '%s' AND `userid` = '%s'", [$product_id, $user_id]);
+        return $ticketData[0]['total'];
+    }
 }

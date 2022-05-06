@@ -18,7 +18,7 @@ class CompetitionProcess extends AdminHelper
 {
     public function __construct()
     {
-        //code here
+        $this->ticketNumbers = new TicketNumbers();
     }
 
     public static function drawDateTimeShow()
@@ -71,12 +71,29 @@ class CompetitionProcess extends AdminHelper
         }
     }
 
-    public static function validateAnswer( $passed ) {
+    public static function validateAnswer( $passed, $product_id, $quantity ) {
+        $ticketNumbers = new TicketNumbers();
+        $maxQtyUser = get_post_meta($product_id, '_maximum_ticket_per_user', true);
         $answer = $_POST['competition_answer'];
+        $current_user = \wp_get_current_user();
+        $totalBought = $ticketNumbers->getTotalBoughtPerUser($product_id, $current_user->ID);
+        $remainingCredits = (int) $maxQtyUser - (int) $totalBought;
+
         if ( !$answer ) {
             wc_add_notice( __( ' Please select an answer!', 'woocommerce' ), 'error' );
             $passed = false;
         }
+
+        if( $totalBought < $maxQtyUser ) {
+            if( $quantity > $remainingCredits) {
+                wc_add_notice( __( 'You have ' .$remainingCredits. ' remaining tickets.', 'woocommerce' ), 'error' );
+                $passed = false;
+            }
+        } else {
+            wc_add_notice( __( 'You have reached the maximum ticket per user', 'woocommerce' ), 'error' );
+            $passed = false;
+        }
+
         return $passed;
     }
 
