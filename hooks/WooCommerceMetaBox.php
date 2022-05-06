@@ -103,6 +103,18 @@ class WooCommerceMetaBox extends AdminHelper
                         ]
                     ]);
 
+                    woocommerce_wp_text_input([
+                        'id' => '_maximum_ticket_per_user',
+                        'class' => 'input_text required',
+                        'label' => __('Maximum Ticket Per User', 'txtdomain'),
+                        'type' => 'number',
+                        'wrapper_class' => 'show_if_competition',
+                        'custom_attributes' => [
+                            'step' => 'any',
+                            'min' => '1'
+                        ]
+                    ]);
+
                     $defaultBasket = $product_object->get_meta('_default_basket', true) ? $product_object->get_meta('_default_basket', true) : 10;
                     woocommerce_wp_text_input([
                         'id' => '_default_basket',
@@ -130,78 +142,32 @@ class WooCommerceMetaBox extends AdminHelper
                         'label' => __('Question', 'txtdomain'),
                         'wrapper_class' => 'show_if_competition',
                     ]);
-                    ?>
-                    <hr>
-                        <div class="row">
-                            <div class="col-12 col-md-6">
-                                <?php
-                                    woocommerce_wp_text_input([
-                                        'id' => '_answer_1',
-                                        'label' => __('Answer 1', 'txtdomain'),
-                                        'wrapper_class' => 'show_if_competition',
-                                    ]);
-                                ?>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <?php
-                                    woocommerce_wp_checkbox([
-                                        'id' => '_is_answer_1',
-                                        'label' => __('', 'txtdomain'),
-                                        'wrapper_class' => 'show_if_competition',
-                                        'desc_tip' => false,
-                                        'description' => __("tick if this is the answer.", 'txtdomain'),
-                                    ]);
-                                ?>
-                            </div>
-                            <hr>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-md-6">
-                                <?php
-                                    woocommerce_wp_text_input([
-                                        'id' => '_answer_2',
-                                        'label' => __('Answer 2', 'txtdomain'),
-                                        'wrapper_class' => 'show_if_competition',
-                                    ]);
-                                ?>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <?php
-                                    woocommerce_wp_checkbox([
-                                        'id' => '_is_answer_2',
-                                        'label' => __('', 'txtdomain'),
-                                        'wrapper_class' => 'show_if_competition',
-                                        'desc_tip' => false,
-                                        'description' => __("tick if this is the answer.", 'txtdomain'),
-                                    ]);
-                                ?>
-                            </div>
-                            <hr>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-md-6">
-                                <?php
-                                    woocommerce_wp_text_input([
-                                        'id' => '_answer_3',
-                                        'label' => __('Answer 3', 'txtdomain'),
-                                        'wrapper_class' => 'show_if_competition',
-                                    ]);
-                                ?>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <?php
-                                    woocommerce_wp_checkbox([
-                                        'id' => '_is_answer_3',
-                                        'label' => __('', 'txtdomain'),
-                                        'wrapper_class' => 'show_if_competition',
-                                        'desc_tip' => false,
-                                        'description' => __("tick if this is the answer.", 'txtdomain'),
-                                    ]);
-                                ?>
-                            </div>
-                            <hr>
-                        </div>
-                    <?php
+
+                    woocommerce_wp_text_input([
+                        'id' => '_answer_1',
+                        'label' => __('Answer 1', 'txtdomain'),
+                        'wrapper_class' => 'show_if_competition',
+                    ]);
+
+                    woocommerce_wp_text_input([
+                        'id' => '_answer_2',
+                        'label' => __('Answer 2', 'txtdomain'),
+                        'wrapper_class' => 'show_if_competition',
+                    ]);
+
+                    woocommerce_wp_text_input([
+                        'id' => '_answer_3',
+                        'label' => __('Answer 3', 'txtdomain'),
+                        'wrapper_class' => 'show_if_competition',
+                    ]);
+                ?>
+                <hr>
+                <?php
+                    woocommerce_wp_text_input([
+                        'id' => '_correct_answer',
+                        'label' => __('Correct Answer', 'txtdomain'),
+                        'wrapper_class' => 'show_if_competition',
+                    ]);
                 ?>
             </div>
         <?php
@@ -230,8 +196,9 @@ class WooCommerceMetaBox extends AdminHelper
         $product->update_meta_data('_answer_1', sanitize_text_field($_POST['_answer_1']));
         $product->update_meta_data('_answer_2', sanitize_text_field($_POST['_answer_2']));
         $product->update_meta_data('_answer_3', sanitize_text_field($_POST['_answer_3']));
+        $product->update_meta_data('_correct_answer', sanitize_text_field($_POST['_correct_answer']));
         $product->update_meta_data('_maximum_ticket', wc_clean($_POST['_maximum_ticket']));
-
+        $product->update_meta_data('_maximum_ticket_per_user', wc_clean($_POST['_maximum_ticket_per_user']));
         $product->update_meta_data('_default_basket', wc_clean($_POST['_default_basket']));
 
         $product->save();

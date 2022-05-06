@@ -35,24 +35,29 @@ class CompetitionTicketNumber extends AdminHelper
 					}
                     $product_id = $item_meta['_product_id'][0];
                     $product_data = wc_get_product( $product_id );
+                    $correctAnswer = get_post_meta($product_id, '_correct_answer');
                     $_my_competition_answer = $item_meta['_my_competition_answer'][0];
 
                     if ( $product_data && $product_data->get_type() == 'competition' ) {
-                        if (apply_filters( 'add_ticket_numbers_from_order', true , $item, $order_id, $product_id ) ){
-                            for ( $i = 0; $i < $item_meta['_qty'][0]; $i++ ) {
-                                $uniqueTicketNumber = $ticketNumbersModel->generateTicketNumber();
-                                $request = array(
-                                    'userid' => $order->get_user_id(),
-                                    'order_id' => $order_id,
-                                    'ticket_number' => $uniqueTicketNumber,
-                                    'answer' => $_my_competition_answer,
-                                    'product_id' => $product_id,
-                                    'item_id' => $item_id,
-                                );
-                                $result = $ticketNumbersModel->store($request);
+                        if( $_my_competition_answer == $correctAnswer[0] ) {
+                            if (apply_filters( 'add_ticket_numbers_from_order', true , $item, $order_id, $product_id ) ){
+                                for ( $i = 0; $i < $item_meta['_qty'][0]; $i++ ) {
+                                    $uniqueTicketNumber = $ticketNumbersModel->generateTicketNumber();
+                                    $request = array(
+                                        'userid' => $order->get_user_id(),
+                                        'order_id' => $order_id,
+                                        'ticket_number' => $uniqueTicketNumber,
+                                        'answer' => $_my_competition_answer,
+                                        'product_id' => $product_id,
+                                        'item_id' => $item_id,
+                                    );
+                                    $result = $ticketNumbersModel->store($request);
+                                }
                             }
                         }
                     }
+
+                    //send Email functionality here
                 }
             }
         }
