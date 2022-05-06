@@ -46,7 +46,8 @@ class CompetitionTicketNumber extends AdminHelper
                                     'order_id' => $order_id,
                                     'ticket_number' => $uniqueTicketNumber,
                                     'answer' => $_my_competition_answer,
-                                    'product_id' => $product_id
+                                    'product_id' => $product_id,
+                                    'item_id' => $item_id,
                                 );
                                 $result = $ticketNumbersModel->store($request);
                             }
@@ -59,11 +60,11 @@ class CompetitionTicketNumber extends AdminHelper
         return;
     }
 
-    public static function addTicketNumberToOders(  $item_id, $item, $_product  ) {
+    public static function addTicketNumberToOders( $item_id, $item, $_product ) {
         $ticketNumbersModel = new TicketNumbers;
         $product_id = $_product->id;
         $order_id = $item['order_id'];
-        $ticketNumbers = $ticketNumbersModel->getTicketNumbersOnEachProduct($product_id, $order_id);
+        $ticketNumbers = $ticketNumbersModel->getTicketNumbersOnEachProduct( $product_id, $order_id, $item_id );
         if($ticketNumbers) {
             foreach($ticketNumbers as $tnKey => $ticketNumber) {
                 echo '<p>Ticket Number: <strong>'. $ticketNumber['ticket_number'] .'</strong></p>';

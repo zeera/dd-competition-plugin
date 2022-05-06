@@ -26,6 +26,7 @@ class DatabaseStructure
                 `ticket_number` varchar(200) DEFAULT NULL,
                 `answer` varchar(200) DEFAULT NULL,
                 `product_id` bigint(20) UNSIGNED NOT NULL,
+                `item_id` bigint(20) UNSIGNED NOT NULL,
                 `date_created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 `created_by` VARCHAR(128) NOT NULL,
                 `last_updated` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -114,7 +114,7 @@ class CompetitionProcess extends AdminHelper
     public static function filterWcOrderItemDisplayMetaKey( $display_key, $meta, $item ) {
         // Change displayed label for specific order item meta key
         if( is_admin() && $item->get_type() === 'line_item' && $meta->key === '_my_competition_answer' ) {
-            $display_key = __("Supplier", "woocommerce" );
+            $display_key = __("Answer", "woocommerce" );
         }
         return $display_key;
     }

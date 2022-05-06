@@ -65,13 +65,13 @@ class Loader
             add_action('woocommerce_add_cart_item_data', [ CompetitionProcess::class, 'addCartItemData'], 10, 3);
             add_action('woocommerce_get_cart_item_from_session', [ CompetitionProcess::class, 'getCartItemFromSession'], 10, 3);
             add_action('woocommerce_get_item_data', [ CompetitionProcess::class, 'getItemData'], 10, 2);
-            //add_action('woocommerce_add_order_item_meta', [ CompetitionProcess::class, 'addOrderItemMeta'], 10, 3); deprecated diddnt delete fore reference
-            add_action('woocommerce_new_order_item', [ CompetitionProcess::class, 'addOrderItemMeta'], 10, 3);
+            add_action('woocommerce_add_order_item_meta', [ CompetitionProcess::class, 'addOrderItemMeta'], 10, 3); //deprecated diddnt delete fore reference
+            // add_action('woocommerce_new_order_item', [ CompetitionProcess::class, 'addOrderItemMeta'], 10, 3);
 
             //CHECKOUT HOOKS
             add_action('woocommerce_order_status_processing', [ CompetitionTicketNumber::class, 'create']);
             add_action('woocommerce_before_order_itemmeta', [ CompetitionTicketNumber::class, 'addTicketNumberToOders'], 10, 3);
-            add_filter('woocommerce_order_item_display_meta_key', [ CompetitionTicketNumber::class, 'filterWcOrderItemDisplayMetaKey'], 20, 3 );
+            add_filter('woocommerce_order_item_display_meta_key', [ CompetitionProcess::class, 'filterWcOrderItemDisplayMetaKey'], 20, 3 );
         }
     }
 }
