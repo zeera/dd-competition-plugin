@@ -1,0 +1,17 @@
+{
+	"name": "digital-drive/wpcompetitions",
+	"description": "Digital Drive basic wp plugin",
+	"type": "project",
+	"autoload": {
+		"psr-4": {
+			"WpDigitalDriveCompetitions\\": "includes/",
+			"WpDigitalDriveCompetitions\\AdminPages\\": "admin-pages/",
+			"WpDigitalDriveCompetitions\\Ajax\\": "ajax/",
+			"WpDigitalDriveCompetitions\\Api\\": "api/",
+			"WpDigitalDriveCompetitions\\Blocks\\": "blocks/",
+			"WpDigitalDriveCompetitions\\Cron\\": "cron/",
+			"WpDigitalDriveCompetitions\\Hooks\\": "hooks/",
+			"WpDigitalDriveCompetitions\\Shortcode\\": "shortcode/"
+		}
+	}
+}

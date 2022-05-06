@@ -1,0 +1,39 @@
+<?php
+/**
+ * =====================================
+ * Competition Scripts
+ * =====================================
+ * File Description
+ * =====================================
+ */
+
+declare(strict_types=1);
+
+namespace WpDigitalDriveCompetitions\Hooks;
+
+use WpDigitalDriveCompetitions\Helpers\AdminHelper;
+
+class CompetitionSettings extends AdminHelper
+{
+    public static function enqueueColorPicker($hook_suffix)
+    {
+        wp_enqueue_style('wp-color-picker');
+        wp_enqueue_script('wp-color-picker');
+    }
+
+    public static function enqueueStylesAndScripts()
+    {
+
+        $version = date("ymd-Gis", filemtime(WPDIGITALDRIVE_COMPETITIONS_PATH . 'assets/css/datetimepicker.css'));
+        wp_register_style('datetimepicker-style', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/css/datetimepicker.css?v=' . $version);
+        wp_enqueue_style("datetimepicker-style");
+
+        $version = date("ymd-Gis", filemtime(WPDIGITALDRIVE_COMPETITIONS_PATH . 'assets/js/competition.js'));
+        wp_register_script('competition-scripts', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/js/competition.js?v=' . $version, array('jquery'), '', true);
+        wp_enqueue_script("competition-scripts");
+
+        $version = date("ymd-Gis", filemtime(WPDIGITALDRIVE_COMPETITIONS_PATH . 'assets/js/datetimepicker.js'));
+        wp_register_script('datetimepicker-scripts', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/js/datetimepicker.js?v=' . $version, array('jquery'), '', true);
+        wp_enqueue_script("datetimepicker-scripts");
+    }
+}

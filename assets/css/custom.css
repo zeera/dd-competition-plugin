@@ -1,0 +1,10 @@
+@charset "UTF-8";
+#adminmenuwrap #adminmenu .toplevel_page_WpDigitalDriveCompetitions .wp-menu-image img {
+  opacity: 1;
+  width: 100%;
+  color: #fff;
+  max-width: 16px;
+}
+#setting-error-settings_updated {
+  margin: 0;
+}
