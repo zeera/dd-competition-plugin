@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace WpDigitalDriveCompetitions\Hooks;
+namespace WpDigitalDriveCompetitions\Hooks\CompetitionsBackend;
 
 use WpDigitalDriveCompetitions\Helpers\AdminHelper;
 

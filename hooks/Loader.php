@@ -10,16 +10,17 @@ namespace WpDigitalDriveCompetitions\Hooks;
 
 //FRONTEND CLASS
 use WpDigitalDriveCompetitions\Hooks\CompetitionsFrontend\CompetitionTicketNumber;
+
 use WpDigitalDriveCompetitions\Hooks\CompetitionsFrontend\CompetitionProcess;
 
 //BACKEND CLASS
 use WpDigitalDriveCompetitions\Hooks\CompetitionsBackend\CompetitionsBackendProcess;
-
-use WpDigitalDriveCompetitions\Hooks\WooCommerceOrderStatusChangedHook;
+use WpDigitalDriveCompetitions\Hooks\CompetitionsBackend\WooCommerceMetaBox;
+use WpDigitalDriveCompetitions\Hooks\CompetitionsBackend\ActivationDeactivationHook;
+use WpDigitalDriveCompetitions\Hooks\CompetitionsBackend\CompetitionSettings;
+use WpDigitalDriveCompetitions\Hooks\CompetitionsBackend\WooCommerceOrderStatusChangedHook;
 use WpDigitalDriveCompetitions\Hooks\WcProductCompetitions;
 
-use WpDigitalDriveCompetitions\Hooks\CompetitionSettings;
-use WpDigitalDriveCompetitions\Hooks\WooCommerceMetaBox;
 
 
 /**

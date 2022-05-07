@@ -6,7 +6,7 @@
 
 declare(strict_types=1);
 
-namespace WpDigitalDriveCompetitions\Hooks;
+namespace WpDigitalDriveCompetitions\Hooks\CompetitionsBackend;
 
 use WC_Order;
 /**

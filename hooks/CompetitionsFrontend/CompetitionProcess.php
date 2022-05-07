@@ -77,6 +77,7 @@ class CompetitionProcess extends AdminHelper
         if ( !$answer ) {
             wc_add_notice( __( ' Please select an answer!', 'woocommerce' ), 'error' );
             $passed = false;
+            return $passed;
         }
         $cartQty = self::getCartItems($product_id);
         $passed = self::validateItems($quantity, $product_id, '', $cartQty);
