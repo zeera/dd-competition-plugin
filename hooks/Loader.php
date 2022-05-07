@@ -54,19 +54,19 @@ class Loader
             add_action('woocommerce_process_product_meta', [ WooCommerceMetaBox::class, 'competitionProductDataStore']);
             add_action('admin_footer', [ WooCommerceMetaBox::class, 'enable_js_on_wc_product']);
             add_action('woocommerce_before_add_to_cart_quantity', [ CompetitionProcess::class, 'drawDateTimeShow']);
-            add_action('woocommerce_after_add_to_cart_form', [ CompetitionProcess::class, 'countdownTimer']);
+            // add_action('woocommerce_after_add_to_cart_form', [ CompetitionProcess::class, 'countdownTimer']);
             add_action('wp_enqueue_scripts', [CompetitionProcess::class, 'cartScripts']);
+
+            //CART HOOKS
             add_action("woocommerce_competition_add_to_cart", function () {
                 do_action('woocommerce_simple_add_to_cart');
             });
-
-            //CART HOOKS
             add_filter( 'woocommerce_add_to_cart_validation',  [ CompetitionProcess::class, 'validateAnswer'], 10, 5 );
             add_action('woocommerce_add_cart_item_data', [ CompetitionProcess::class, 'addCartItemData'], 10, 3);
             add_action('woocommerce_get_cart_item_from_session', [ CompetitionProcess::class, 'getCartItemFromSession'], 10, 3);
             add_action('woocommerce_get_item_data', [ CompetitionProcess::class, 'getItemData'], 10, 2);
-            add_action('woocommerce_add_order_item_meta', [ CompetitionProcess::class, 'addOrderItemMeta'], 10, 3); //deprecated diddnt delete fore reference
-            // add_action('woocommerce_new_order_item', [ CompetitionProcess::class, 'addOrderItemMeta'], 10, 3);
+            add_action('woocommerce_add_order_item_meta', [ CompetitionProcess::class, 'addOrderItemMeta'], 10, 3);
+            add_action( 'woocommerce_update_cart_action_cart_updated', [ CompetitionProcess::class, 'onCartUpdate'], 20, 1 );
 
             //CHECKOUT HOOKS
             add_action('woocommerce_order_status_processing', [ CompetitionTicketNumber::class, 'create']);

@@ -71,30 +71,86 @@ class CompetitionProcess extends AdminHelper
         }
     }
 
-    public static function validateAnswer( $passed, $product_id, $quantity ) {
-        $ticketNumbers = new TicketNumbers();
-        $maxQtyUser = get_post_meta($product_id, '_maximum_ticket_per_user', true);
+    public static function validateAnswer( $passed, $product_id, $quantity )
+    {
         $answer = $_POST['competition_answer'];
-        $current_user = \wp_get_current_user();
-        $totalBought = $ticketNumbers->getTotalBoughtPerUser($product_id, $current_user->ID);
-        $remainingCredits = (int) $maxQtyUser - (int) $totalBought;
-
         if ( !$answer ) {
             wc_add_notice( __( ' Please select an answer!', 'woocommerce' ), 'error' );
             $passed = false;
         }
-
-        if( $totalBought < $maxQtyUser ) {
-            if( $quantity > $remainingCredits) {
-                wc_add_notice( __( 'You have ' .$remainingCredits. ' remaining tickets.', 'woocommerce' ), 'error' );
-                $passed = false;
-            }
-        } else {
-            wc_add_notice( __( 'You have reached the maximum ticket per user', 'woocommerce' ), 'error' );
-            $passed = false;
-        }
+        $cartQty = self::getCartItems($product_id);
+        $passed = self::validateItems($quantity, $product_id, '', $cartQty);
 
         return $passed;
+    }
+
+    public static function onCartUpdate( $cart_updated ) {
+        global $woocommerce;
+        $items = $woocommerce->cart->get_cart();
+        $cart_updated = true;
+        $adminHelper = new AdminHelper();
+        if( $items ) {
+            foreach ($items as $key => $item) {
+                // $adminHelper->dd($item, true);
+                $cartQty = $item['quantity'];
+                $product_id = $item['product_id'];
+                $cartItemKey = $item['key'];
+                $cart_updated = self::validateItems($cartQty, $product_id, $cartItemKey);
+                return $cart_updated;
+            }
+        }
+    }
+
+    public static function validateItems($qty, $productID, $cartItemKey = '', $cartQty = 0)
+    {
+        $ticketNumbers = new TicketNumbers();
+        $productData = wc_get_product( $productID );
+        $maxQtyUser = get_post_meta($productID, '_maximum_ticket_per_user', true);
+        $current_user = \wp_get_current_user();
+        $totalBought = $ticketNumbers->getTotalBoughtPerUser($productID, $current_user->ID);
+        $totalBought = (int) $totalBought + (int) $cartQty;
+        $remainingCredits = (int) $maxQtyUser - (int) $totalBought;
+        $cart = WC()->cart;
+        if( $productData && $productData->get_type() == 'competition' ) {
+            if ($totalBought < $maxQtyUser) {
+                if( $remainingCredits == $maxQtyUser ) {
+                    if( $qty > $maxQtyUser ) {
+                        if( $cartItemKey ) {
+                            $cart->cart_contents[ $cartItemKey ]['quantity'] = $maxQtyUser;
+                        }
+                        wc_add_notice(__('You can only bought at least ' .$maxQtyUser. ' ticket for this product: <strong> ' .$productData->name. ' </strong>', 'woocommerce'), 'error');
+                        return false;
+                    }
+                } else if ( $qty > $remainingCredits ) {
+                    if( $cartItemKey ) {
+                        $cart->cart_contents[ $cartItemKey ]['quantity'] = $remainingCredits;
+                    }
+                    wc_add_notice(__('You have ' .$remainingCredits. ' remaining tickets for this product: <strong> ' .$productData->name. ' </strong>', 'woocommerce'), 'error');
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                wc_add_notice( __( 'You have reached the maximum ticket for this product: <strong> ' .$productData->name. ' </strong>', 'woocommerce' ), 'error' );
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+
+    public static function getCartItems($productID)
+    {
+        $qty = 0;
+
+        foreach (WC()->cart->get_cart() as $cart_item) {
+            $product_in_cart = $cart_item['product_id'];
+            if ($product_in_cart === $productID) {
+                $qty = (int) $qty + (int) $cart_item['quantity'];
+            }
+        }
+
+        return $qty;
     }
 
     public static function addCartItemData ( $cartItemData, $productId, $variationId ) {
