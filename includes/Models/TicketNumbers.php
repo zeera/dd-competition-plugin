@@ -161,4 +161,9 @@ class TicketNumbers extends TableHelper
         $ticketData = $this->queryWp("SELECT COUNT(*) as `total` FROM `#prefix_ticket_numbers` WHERE `product_id` = '%s' AND `userid` = '%s'", [$product_id, $user_id]);
         return $ticketData[0]['total'];
     }
+
+    public function getProductEntryList($product_id) {
+        $ticketData = $this->queryWp("SELECT * FROM `#prefix_ticket_numbers` WHERE `product_id` = '%s'", [$product_id]);
+        return $ticketData;
+    }
 }

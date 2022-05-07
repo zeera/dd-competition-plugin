@@ -38,6 +38,8 @@ class Loader
             // add_submenu_page(WPDIGITALDRIVE_COMPETITIONS_NAMESPACE, __("Price Match Settings"), __("Price Match Settings"), "administrator", WPDIGITALDRIVE_COMPETITIONS_NAMESPACE . "_price-matching-modal-settings", [self::class, "menuPriceMatchingModal"]);
 
             add_submenu_page(WPDIGITALDRIVE_COMPETITIONS_NAMESPACE, __("Shortcodes"), __("Shortcodes"), "administrator", WPDIGITALDRIVE_COMPETITIONS_NAMESPACE . "_shortcode_list", [self::class, "menuShortcodes"]);
+
+            add_submenu_page(WPDIGITALDRIVE_COMPETITIONS_NAMESPACE, __("Entry Lists"), __("Entry Lists"), "administrator", WPDIGITALDRIVE_COMPETITIONS_NAMESPACE . "_entry_lists", [self::class, "menuEntryList"]);
         }
 
     }
@@ -74,4 +76,16 @@ class Loader
         new \WpDigitalDriveCompetitions\AdminPages\Shortcodes\Controller('index');
     }
 
+    /**
+     * Entry Lists
+     */
+    public static function menuEntryList()
+    {
+        if (isset($_GET['product_id']) && isset($_GET['page'])) {
+            new \WpDigitalDriveCompetitions\AdminPages\EntryLists\Controller('view');
+        } else {
+            wp_redirect( admin_url( '/edit.php?post_type=product' ) );
+            exit;
+        }
+    }
 }

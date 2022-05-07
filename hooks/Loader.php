@@ -12,6 +12,9 @@ namespace WpDigitalDriveCompetitions\Hooks;
 use WpDigitalDriveCompetitions\Hooks\CompetitionsFrontend\CompetitionTicketNumber;
 use WpDigitalDriveCompetitions\Hooks\CompetitionsFrontend\CompetitionProcess;
 
+//BACKEND CLASS
+use WpDigitalDriveCompetitions\Hooks\CompetitionsBackend\CompetitionsBackendProcess;
+
 use WpDigitalDriveCompetitions\Hooks\WooCommerceOrderStatusChangedHook;
 use WpDigitalDriveCompetitions\Hooks\WcProductCompetitions;
 
@@ -70,8 +73,13 @@ class Loader
 
             //CHECKOUT HOOKS
             add_action('woocommerce_order_status_processing', [ CompetitionTicketNumber::class, 'create']);
+            add_action('woocommerce_order_status_completed', [ CompetitionTicketNumber::class, 'create']);
             add_action('woocommerce_before_order_itemmeta', [ CompetitionTicketNumber::class, 'addTicketNumberToOders'], 10, 3);
             add_filter('woocommerce_order_item_display_meta_key', [ CompetitionProcess::class, 'filterWcOrderItemDisplayMetaKey'], 20, 3 );
+
+            //ADMIN HOOKS
+            add_filter('manage_edit-product_columns', [ CompetitionsBackendProcess::class, 'showProductOrder'], 10, 2);
+            add_filter('manage_product_posts_custom_column', [ CompetitionsBackendProcess::class, 'addCustomButton'], 10, 2);
         }
     }
 }
