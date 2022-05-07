@@ -28,6 +28,7 @@ class Loader
         // add_shortcode('wpplugin_bigexample', [self::class, "bigExample"]);
         $version = date("ymd-Gis", filemtime(WPDIGITALDRIVE_COMPETITIONS_PATH . 'assets/css/featured-competitions.css'));
         wp_register_style('featured-competition-style', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/css/featured-competitions.css?v=' . $version);
+        wp_register_style('entry-lists-style', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/css/entry-lists.css?v=' . $version);
 
         wp_register_script('featured-competition-scripts', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/js/featured-competitions.js?v=' . $version, array('jquery'), '', true);
 
@@ -80,11 +81,8 @@ class Loader
     }
 
     public static function displayEntryListsCompetition($attr){
-        if(!wp_style_is('featured-competition-style')) {
-            wp_enqueue_style("featured-competition-style");
-        }
-        if(!wp_script_is('featured-competition-scripts')) {
-            wp_enqueue_script("featured-competition-scripts");
+        if(!wp_style_is('entry-lists-style')) {
+            wp_enqueue_style("entry-lists-style");
         }
         //A useful function to know
         $attr = shortcode_atts(array(
