@@ -10,6 +10,7 @@ namespace WpDigitalDriveCompetitions\Shortcode;
 
 use WpDigitalDriveCompetitions\Shortcode\FeaturedCompetitions\FeaturedCompetitions;
 use WpDigitalDriveCompetitions\Shortcode\AllCompetitions\AllCompetitions;
+use WpDigitalDriveCompetitions\Shortcode\EntryListsCompetition\EntryListsCompetition;
 
 /**
  * Shortcode Loader
@@ -33,7 +34,7 @@ class Loader
         add_shortcode( 'display_attributes', [self::class, "attributes"] );
         add_shortcode( 'featured-competitions', [self::class, "displayFeaturedCompetition"] );
         add_shortcode( 'all-competitions', [self::class, "displayAllCompetition"] );
-
+        add_shortcode( 'entry-lists-competition', [self::class, "displayEntryListsCompetition"] );
     }
 
     public static function displayFeaturedCompetition($attr){
@@ -74,6 +75,27 @@ class Loader
 
         $allCompetitions = new AllCompetitions;
         $returnstring = $allCompetitions->display($attr);
+
+        return $returnstring;
+    }
+
+    public static function displayEntryListsCompetition($attr){
+        if(!wp_style_is('featured-competition-style')) {
+            wp_enqueue_style("featured-competition-style");
+        }
+        if(!wp_script_is('featured-competition-scripts')) {
+            wp_enqueue_script("featured-competition-scripts");
+        }
+        //A useful function to know
+        $attr = shortcode_atts(array(
+            'per_page'        => '6',
+            'orderby'      => 'id',
+            'order'        => 'DESC',
+            'heading_title' => 'Entry Lists'
+        ), $attr);
+
+        $entryListsCompetitions = new EntryListsCompetition;
+        $returnstring = $entryListsCompetitions->display($attr);
 
         return $returnstring;
     }

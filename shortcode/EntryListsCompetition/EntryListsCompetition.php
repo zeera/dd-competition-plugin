@@ -9,6 +9,9 @@ namespace WpDigitalDriveCompetitions\Shortcode\EntryListsCompetition;
 class EntryListsCompetition
 {
     public static function display($attr) {
+        ob_start();
+        extract($attr);
+
         $query = new \WP_Query( array(
             'post_type'           => 'product',
             'post_status'         => 'publish',
@@ -20,12 +23,20 @@ class EntryListsCompetition
                 'relation' => 'AND',
                     array(
                         'key' => '_end_date_and_time',
-                        'value' => date(),
+                        'value' => date('Y-m-d H:i:s'),
                         'compare' => '>=',
                         'type' => 'datetime'
                     ),
             )
-
         ) );
+?>
+        <div class='entry-lists-competition-section'>
+            <div class="entry-lists-competition-heading">
+                <h2 class="section-title"><?= $heading_title ?></h2>
+            </div>
+        </div>
+<?php
+        $output = ob_get_clean();
+        return $output;
     }
 }
