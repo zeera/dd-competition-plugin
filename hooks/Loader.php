@@ -49,6 +49,10 @@ class Loader
         register_activation_hook( __FILE__, [ WooCommerceMetaBox::class, 'installTaxonomy'] );
         remove_action( 'woocommerce_after_add_to_cart_button', [CompetitionProcess::class, 'displayNotice'] );
 
+        add_filter('woocommerce_checkout_fields', [ CompetitionProcess::class, 'setBillingFieldsReadOnly']);
+        // add_filter('woocommerce_default_address_fields', 'override_default_address_checkout_fields', 20, 1);
+        // add_filter('woocommerce_checkout_fields', 'custom_override_checkout_fields');
+
         /** Woocmmerce Hooks that requires Woo Classes
          * ===================================== */
         if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')))) {

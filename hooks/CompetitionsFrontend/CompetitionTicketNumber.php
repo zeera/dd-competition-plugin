@@ -54,6 +54,7 @@ class CompetitionTicketNumber
                     $correctAnswer = get_post_meta($product_id, '_correct_answer');
                     $question = get_post_meta($product_id, '_question');
                     $_my_competition_answer = $item_meta['_my_competition_answer'][0];
+                    $_competition_guest_email = $item_meta['_competition_guest_email'][0];
 
                     if ( $product_data && $product_data->get_type() == 'competition' ) {
                         if( $_my_competition_answer == $correctAnswer[0] ) {
@@ -63,7 +64,7 @@ class CompetitionTicketNumber
                                     $uniqueTicketNumber = $ticketNumbersModel->generateTicketNumber();
                                     $request = array(
                                         'userid' => $order->get_user_id(),
-                                        'email' => $billing_email,
+                                        'email' => $_competition_guest_email != '' ? $_competition_guest_email : $billing_email,
                                         'order_id' => $order_id,
                                         'ticket_number' => $uniqueTicketNumber,
                                         'answer' => $_my_competition_answer,
@@ -83,7 +84,7 @@ class CompetitionTicketNumber
                                 'competition_name' => $product_data->name,
                                 'question' => $question[0],
                                 'ticket_number' => $ticketNumbers,
-                                'email' => $billing_email,
+                                'email' => $_competition_guest_email != '' ? $_competition_guest_email : $billing_email,
                                 'subject' => get_bloginfo().' - Competition',
                                 'status' => 'correct',
                             ];
@@ -94,7 +95,7 @@ class CompetitionTicketNumber
                                 'answer' => $_my_competition_answer,
                                 'competition_name' => $product_data->name,
                                 'question' => $question[0],
-                                'email' => $billing_email,
+                                'email' => $_competition_guest_email != '' ? $_competition_guest_email : $billing_email,
                                 'subject' => get_bloginfo().' - Competition(Incorrect)',
                                 'status' => 'incorrect',
                             ];

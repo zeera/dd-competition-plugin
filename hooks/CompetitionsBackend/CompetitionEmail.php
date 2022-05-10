@@ -91,7 +91,7 @@ class CompetitionEmail extends AdminHelper
                     </table>
                 ';
             } elseif ( $args['status'] == 'incorrect' ) {
-                $message = '<h2>Congratulations your answer is correct!</h2>';
+                $message = '<h2>Sorry your answer is incorrect!</h2>';
                 $message .= '
                     <table>
                         <tbody>

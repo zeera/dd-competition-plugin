@@ -16,6 +16,8 @@ use WpDigitalDriveCompetitions\Models\TicketNumbers;
 
 class CompetitionProcess extends AdminHelper
 {
+    protected static $guestEmail = '';
+
     public function __construct()
     {
         $this->ticketNumbers = new TicketNumbers();
@@ -33,6 +35,7 @@ class CompetitionProcess extends AdminHelper
         $answer_1 =  get_post_meta($currentPostID, '_answer_1');
         $answer_2 =  get_post_meta($currentPostID, '_answer_2');
         $answer_3 =  get_post_meta($currentPostID, '_answer_3');
+        $current_user = is_user_logged_in();
         ?>
             <div class="competition meta-draw-end-time">
                 <p>Draw Date/Time - <?php echo $drawDate[0]; ?></p>
@@ -45,12 +48,25 @@ class CompetitionProcess extends AdminHelper
                 <hr>
                 <div class="competition question-ans">
                     <h4><?php echo $question[0]; ?></h4>
-                    <input class="competition_answer" type="radio" name="competition_answer" value="<?php echo $answer_1[0]; ?>" id="<?php echo $answer_1[0]; ?>">
+                    <input class="competition_answer" type="radio" name="competition_answer" value="<?php echo $answer_1[0]; ?>" id="<?php echo $answer_1[0]; ?>" required>
                     <label for="<?php echo $answer_1[0]; ?>"><?php echo $answer_1[0]; ?></label><br>
-                    <input class="competition_answer" type="radio" name="competition_answer" value="<?php echo $answer_2[0]; ?>" id="<?php echo $answer_2[0]; ?>">
+                    <input class="competition_answer" type="radio" name="competition_answer" value="<?php echo $answer_2[0]; ?>" id="<?php echo $answer_2[0]; ?>" required>
                     <label for="<?php echo $answer_2[0]; ?>"><?php echo $answer_2[0]; ?></label><br>
-                    <input class="competition_answer" type="radio" name="competition_answer" value="<?php echo $answer_3[0]; ?>" id="<?php echo $answer_3[0]; ?>">
+                    <input class="competition_answer" type="radio" name="competition_answer" value="<?php echo $answer_3[0]; ?>" id="<?php echo $answer_3[0]; ?>" required>
                     <label for="<?php echo $answer_3[0]; ?>"><?php echo $answer_3[0]; ?></label><br>
+                    <?php
+                        if( !$current_user ) {
+                            ?>
+                                <div class="form-control" style="padding-top:10px;">
+                                    <label for="competition_email">
+                                        <strong>Email:</strong>
+                                        <input id="competition_email" class="competition_answer" type="email" name="competition_email" style="margin-top:10px;" >
+                                        <small>Note: Clear your cart first if your going to use different email!</small>
+                                    </label>
+                                </div>
+                            <?php
+                        }
+                    ?>
                 </div>
                 <hr>
             <?php endif; ?>
@@ -75,11 +91,30 @@ class CompetitionProcess extends AdminHelper
     {
         $adminHelper = new AdminHelper;
         $answer = $_POST['competition_answer'];
+        $email = $_POST['competition_email'];
+        $current_user = is_user_logged_in();
+
         if ( !$answer ) {
             wc_add_notice( __( ' Please select an answer!', 'woocommerce' ), 'error' );
             $passed = false;
             return $passed;
         }
+
+        if ( !$current_user && !$email ) {
+            wc_add_notice( __( ' Please enter Email!', 'woocommerce' ), 'error' );
+            $passed = false;
+            return $passed;
+        }
+
+        if ( self::$guestEmail != '' ) {
+            $passed = true;
+            if( $email != self::$guestEmail  ) {
+                wc_add_notice( __( ' Your Using different email and you have items on your cart. Please clear your cart first when using different email!', 'woocommerce' ), 'error' );
+                $passed = false;
+            }
+            return $passed;
+        }
+
         $cartQty = self::getCartItems($product_id);
         $passed = self::validateItems($quantity, $product_id, '', $cartQty);
 
@@ -160,7 +195,9 @@ class CompetitionProcess extends AdminHelper
 
     public static function addCartItemData ( $cartItemData, $productId, $variationId ) {
         $answer = $_POST['competition_answer'];
+        $email = $_POST['competition_email'];
         $cartItemData['_my_competition_answer'] = $answer;
+        $cartItemData['_competition_guest_email'] = $email;
         return $cartItemData;
     }
 
@@ -168,6 +205,12 @@ class CompetitionProcess extends AdminHelper
         if ( isset( $cartItemSessionData['_my_competition_answer'] ) ) {
             $cartItemData['_my_competition_answer'] = $cartItemSessionData['_my_competition_answer'];
         }
+
+        if ( isset( $cartItemSessionData['_competition_guest_email'] ) ) {
+            $cartItemData['_competition_guest_email'] = $cartItemSessionData['_competition_guest_email'];
+        }
+
+        self::$guestEmail = $cartItemSessionData['_competition_guest_email'];
 
         return $cartItemData;
     }
@@ -195,5 +238,15 @@ class CompetitionProcess extends AdminHelper
             $display_key = __("Answer", "woocommerce" );
         }
         return $display_key;
+    }
+
+    public static function setBillingFieldsReadOnly($fields)
+    {
+        if( self::$guestEmail ) {
+            $fields['billing']['billing_email']['custom_attributes'] = array('readonly'=>'readonly');
+            $fields['billing']['billing_email']['default'] = self::$guestEmail;
+        }
+
+        return $fields;
     }
 }
