@@ -73,6 +73,7 @@ class CompetitionProcess extends AdminHelper
 
     public static function validateAnswer( $passed, $product_id, $quantity )
     {
+        $adminHelper = new AdminHelper;
         $answer = $_POST['competition_answer'];
         if ( !$answer ) {
             wc_add_notice( __( ' Please select an answer!', 'woocommerce' ), 'error' );
@@ -104,7 +105,9 @@ class CompetitionProcess extends AdminHelper
 
     public static function validateItems($qty, $productID, $cartItemKey = '', $cartQty = 0)
     {
-        $ticketNumbers = new TicketNumbers();
+        $ticketNumbers = new TicketNumbers;
+        $adminHelper = new AdminHelper;
+
         $productData = wc_get_product( $productID );
         $maxQtyUser = get_post_meta($productID, '_maximum_ticket_per_user', true);
         $current_user = \wp_get_current_user();
@@ -122,6 +125,7 @@ class CompetitionProcess extends AdminHelper
                         wc_add_notice(__('You can only bought at least ' .$maxQtyUser. ' ticket for this product: <strong> ' .$productData->name. ' </strong>', 'woocommerce'), 'error');
                         return false;
                     }
+                    return true;
                 } else if ( $qty > $remainingCredits ) {
                     if( $cartItemKey ) {
                         $cart->cart_contents[ $cartItemKey ]['quantity'] = $remainingCredits;

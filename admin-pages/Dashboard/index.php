@@ -15,15 +15,15 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="buttonText">Maximum Ticket Default Value</label>
-                            <input class="form-control" id="buttonText" type="text" name="maximum_ticket_default_value" value="<?php echo get_option('maximum_ticket_default_value') ? get_option('maximum_ticket_default_value') : ''; ?>">
+                            <input class="form-control" id="buttonText" type="number" name="maximum_ticket_default_value" value="<?php echo get_option('maximum_ticket_default_value') ? get_option('maximum_ticket_default_value') : ''; ?>">
                         </div>
                         <div class="form-group">
                             <label for="buttonText">Default Basket Quantity</label>
-                            <input class="form-control" id="buttonText" type="text" name="default_basket_quantity" value="<?php echo get_option('default_basket_quantity') ? get_option('default_basket_quantity') : ''; ?>">
+                            <input class="form-control" id="buttonText" type="number" name="default_basket_quantity" value="<?php echo get_option('default_basket_quantity') ? get_option('default_basket_quantity') : ''; ?>">
                         </div>
                         <div class="form-group">
                             <label for="buttonText">Maximum Ticket Default Per User</label>
-                            <input class="form-control" id="buttonText" type="text" name="maximum_ticket_default_per_user" data-default-color="#81d742" value="<?php echo get_option('maximum_ticket_default_per_user') ? get_option('maximum_ticket_default_per_user') : ''; ?>">
+                            <input class="form-control" id="buttonText" type="number" name="maximum_ticket_default_per_user" data-default-color="#81d742" value="<?php echo get_option('maximum_ticket_default_per_user') ? get_option('maximum_ticket_default_per_user') : ''; ?>">
                         </div>
                     </div>
                 </div>
