@@ -90,7 +90,16 @@ class CompetitionTicketNumber
 
                             $competitionEmail->setEmail($emailArgs);
                         } else {
-                            //send email incorrect
+                            $emailArgs = [
+                                'answer' => $_my_competition_answer,
+                                'competition_name' => $product_data->name,
+                                'question' => $question[0],
+                                'email' => $billing_email,
+                                'subject' => get_bloginfo().' - Competition(Incorrect)',
+                                'status' => 'incorrect',
+                            ];
+
+                            $competitionEmail->setEmail($emailArgs);
                         }
                     }
                 }

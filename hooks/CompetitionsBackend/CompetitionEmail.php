@@ -90,7 +90,26 @@ class CompetitionEmail extends AdminHelper
                         </tbody>
                     </table>
                 ';
-            } elseif ( $args['status'] == 'in-correct' ) {
+            } elseif ( $args['status'] == 'incorrect' ) {
+                $message = '<h2>Congratulations your answer is correct!</h2>';
+                $message .= '
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td width="25%"><b>Competition Name:</b></td>
+                                <td width="75%">' . $args['competition_name'] . '</td>
+                            </tr>
+                            <tr>
+                                <td width="25%"><b>Question:</b></td>
+                                <td width="75%">' . $args['question'] . '</td>
+                            </tr>
+                            <tr>
+                                <td width="25%"><b>Your Answer:</b></td>
+                                <td width="75%">' . $args['answer'] . '</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                ';
             }
             $message = str_replace("[message]", $message, $this->emailDetails());
             $sendEmail = self::sendEmail($args['email'], $args['subject'], $message);
