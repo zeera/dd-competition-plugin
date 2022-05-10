@@ -80,11 +80,11 @@ class CompetitionTicketNumber
                             $emailArgs = [
                                 'answer' => $_my_competition_answer,
                                 'correct_answer' => $correctAnswer[0],
-                                'competition_name' => $product_data->title,
-                                'question' => $question,
+                                'competition_name' => $product_data->name,
+                                'question' => $question[0],
                                 'ticket_number' => $ticketNumbers,
                                 'email' => $billing_email,
-                                'subject' => get_bloginfo().' - Competition(Incorrect)',
+                                'subject' => get_bloginfo().' - Competition',
                                 'status' => 'correct',
                             ];
 
