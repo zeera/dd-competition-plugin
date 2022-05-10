@@ -34,7 +34,9 @@ class CompetitionEmail extends AdminHelper
                 style="background-color:#e7e7e7; width:775px; max-width:90%; margin:0 auto;" >
                 <thead>
                     <tr>
-                        <th style="padding: 20px 0px 20px 0px;"></th>
+                        <th style="padding: 20px 0px 20px 0px;">
+                            '. esc_url( wp_get_attachment_image_src( get_theme_mod( 'custom_logo' ), 'full' )[0] ) .'
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
