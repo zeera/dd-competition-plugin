@@ -89,7 +89,7 @@ class WooCommerceMetaBox extends AdminHelper
                         'wrapper_class' => 'show_if_competition',
                     ]);
 
-                    $maximumTicket = $product_object->get_meta('_maximum_ticket', true) ? $product_object->get_meta('_maximum_ticket', true) : 10;
+                    $maximumTicket = $product_object->get_meta('_maximum_ticket', true) ? $product_object->get_meta('_maximum_ticket', true) : get_option('maximum_ticket_default_value');
                     woocommerce_wp_text_input([
                         'id' => '_maximum_ticket',
                         'class' => 'input_text required',
@@ -103,11 +103,13 @@ class WooCommerceMetaBox extends AdminHelper
                         ]
                     ]);
 
+                    $maximumTicketUser = $product_object->get_meta('_maximum_ticket_per_user', true) ? $product_object->get_meta('_maximum_ticket_per_user', true) : get_option('maximum_ticket_default_per_user');
                     woocommerce_wp_text_input([
                         'id' => '_maximum_ticket_per_user',
                         'class' => 'input_text required',
                         'label' => __('Maximum Ticket Per User', 'txtdomain'),
                         'type' => 'number',
+                        'value' => $maximumTicketUser,
                         'wrapper_class' => 'show_if_competition',
                         'custom_attributes' => [
                             'step' => 'any',
@@ -115,7 +117,7 @@ class WooCommerceMetaBox extends AdminHelper
                         ]
                     ]);
 
-                    $defaultBasket = $product_object->get_meta('_default_basket', true) ? $product_object->get_meta('_default_basket', true) : 10;
+                    $defaultBasket = $product_object->get_meta('_default_basket', true) ? $product_object->get_meta('_default_basket', true) : get_option('default_basket_quantity');
                     woocommerce_wp_text_input([
                         'id' => '_default_basket',
                         'label' => __('Default Basket Quantity', 'txtdomain'),

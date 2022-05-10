@@ -22,6 +22,7 @@ class DatabaseStructure
         $sql = " CREATE TABLE IF NOT EXISTS $data_table (
                 `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
                 `userid` bigint(20) unsigned NOT NULL,
+                `email` VARCHAR(300) DEFAULT NULL,
                 `order_id` bigint(20) UNSIGNED NOT NULL,
                 `ticket_number` varchar(200) DEFAULT NULL,
                 `answer` varchar(200) DEFAULT NULL,

@@ -33,7 +33,7 @@ class Loader
             add_menu_page(__("Competition"), __("Competition"), "administrator", WPDIGITALDRIVE_COMPETITIONS_NAMESPACE, '', WPDIGITALDRIVE_COMPETITIONS_URL . "assets/images/logo.svg", 85);
 
             // Sub menu pages (hooks for later if needed??)
-            // add_submenu_page(WPDIGITALDRIVE_COMPETITIONS_NAMESPACE, __("Dashboard"), __("Dashboard"), "administrator", WPDIGITALDRIVE_COMPETITIONS_NAMESPACE, [self::class, "menuPageDashboard"]);
+            add_submenu_page(WPDIGITALDRIVE_COMPETITIONS_NAMESPACE, __("Dashboard"), __("Dashboard"), "administrator", WPDIGITALDRIVE_COMPETITIONS_NAMESPACE, [self::class, "menuPageDashboard"]);
 
             // add_submenu_page(WPDIGITALDRIVE_COMPETITIONS_NAMESPACE, __("Price Match Settings"), __("Price Match Settings"), "administrator", WPDIGITALDRIVE_COMPETITIONS_NAMESPACE . "_price-matching-modal-settings", [self::class, "menuPriceMatchingModal"]);
 
@@ -49,11 +49,7 @@ class Loader
      */
     public static function menuPageDashboard()
     {
-        if (isset($_GET['id']) || isset($_GET['add'])) {
-            new \WpDigitalDriveCompetitions\AdminPages\Dashboard\Controller('view');
-        } else {
-            new \WpDigitalDriveCompetitions\AdminPages\Dashboard\Controller('index');
-        }
+        new \WpDigitalDriveCompetitions\AdminPages\Dashboard\Controller('index');
     }
 
 

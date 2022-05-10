@@ -36,4 +36,12 @@ class CompetitionSettings extends AdminHelper
         wp_register_script('datetimepicker-scripts', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/js/datetimepicker.js?v=' . $version, array('jquery'), '', true);
         wp_enqueue_script("datetimepicker-scripts");
     }
+
+    public static function registerField()
+    {
+        register_setting( 'digital_drive_competition_settings', 'maximum_ticket_default_value' );
+        register_setting( 'digital_drive_competition_settings', 'default_basket_quantity' );
+        register_setting( 'digital_drive_competition_settings', 'maximum_ticket_default_per_user' );
+        register_setting( 'digital_drive_competition_settings', 'textColor' );
+    }
 }

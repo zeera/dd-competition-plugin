@@ -43,6 +43,7 @@ class Loader
 
         /** Admin Styles and Scripts
          * ===================================== */
+        add_action('admin_init', [CompetitionSettings::class, 'registerField']);
         add_action( 'admin_enqueue_scripts', [CompetitionSettings::class, 'enqueueColorPicker'] );
         add_action( 'admin_enqueue_scripts', [CompetitionSettings::class, 'enqueueStylesAndScripts'] );
         register_activation_hook( __FILE__, [ WooCommerceMetaBox::class, 'installTaxonomy'] );
