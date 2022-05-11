@@ -64,7 +64,7 @@ class CompetitionTicketNumber
                                     $uniqueTicketNumber = $ticketNumbersModel->generateTicketNumber();
                                     $request = array(
                                         'userid' => $order->get_user_id(),
-                                        'email' => $_competition_guest_email != '' ? $_competition_guest_email : $billing_email,
+                                        'email' => $billing_email,
                                         'order_id' => $order_id,
                                         'ticket_number' => $uniqueTicketNumber,
                                         'answer' => $_my_competition_answer,
@@ -84,7 +84,7 @@ class CompetitionTicketNumber
                                 'competition_name' => $product_data->name,
                                 'question' => $question[0],
                                 'ticket_number' => $ticketNumbers,
-                                'email' => $_competition_guest_email != '' ? $_competition_guest_email : $billing_email,
+                                'email' => $billing_email,
                                 'subject' => get_bloginfo().' - Competition',
                                 'status' => 'correct',
                             ];
