@@ -40,7 +40,6 @@ class CompetitionTicketNumber
         $billing_phone       = $order->get_billing_phone() ?? '';
         $order_date_created  = $order->get_date_created()->date('Y-m-d') ?? '';
         $order_date_modified = $order->get_date_modified()->date('Y-m-d') ?? '';
-
         if ( $order ) {
             if ( $order_items = $order->get_items() ) {
                 foreach ( $order_items as $item_id => $item ) {
@@ -54,7 +53,7 @@ class CompetitionTicketNumber
                     $correctAnswer = get_post_meta($product_id, '_correct_answer');
                     $question = get_post_meta($product_id, '_question');
                     $_my_competition_answer = $item_meta['_my_competition_answer'][0];
-                    $_competition_guest_email = $item_meta['_competition_guest_email'][0];
+                    // $_competition_guest_email = $item_meta['_competition_guest_email'][0];
 
                     if ( $product_data && $product_data->get_type() == 'competition' ) {
                         if( $_my_competition_answer == $correctAnswer[0] ) {

@@ -54,7 +54,7 @@ class TicketNumbers extends TableHelper
             'userid' => ['userid', 'INT', $required],
             'email' => ['email', 'STRING', false],
             'order_id' => ['order_id', 'INT', $required],
-            'ticket_number' => ['ticket_number', 'INT', $required, 200],
+            'ticket_number' => ['ticket_number', 'INT', $required],
             'answer' => ['answer', 'STRING', false],
             'product_id' => ['product_id', 'INT', $required],
             'item_id' => ['item_id', 'INT', $required],
@@ -72,7 +72,7 @@ class TicketNumbers extends TableHelper
     public function store( $request ) {
 
 
-        // $this->adminHelper->dd($request);
+        // $this->adminHelper->dd($request,true ,true);
         $validation = $this->getValidationArray();
         $newId = null;
 
@@ -155,11 +155,10 @@ class TicketNumbers extends TableHelper
 
     public function generateTicketNumberByProduct($productID)
     {
-        $ticketData = $this->queryWp("SELECT MAX(ticket_number) as 'latest' FROM `#prefix_ticket_numbers` WHERE `product_id` = '%s'", [$productID]);
-        $total = ($ticketData[0]['latest'] == NULL) ? 1 : $ticketData[0]['latest'];
-        if( $total > 0 ) {
-            $total += 1;
-        }
+        $query = "SELECT MAX(ticket_number) as 'latest' FROM `#prefix_ticket_numbers` WHERE `product_id` = '%s'";
+        $ticketData = $this->queryWp($query, [$productID]);
+        $total = ($ticketData[0]['latest'] == NULL) ? 0 : $ticketData[0]['latest'];
+        $total += 1;
         $ticketNumber = $total;
         $count = $this->isTicketNumberExist($ticketNumber, $productID);
         if( $count > 0 ) {
