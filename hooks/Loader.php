@@ -21,8 +21,6 @@ use WpDigitalDriveCompetitions\Hooks\CompetitionsBackend\CompetitionSettings;
 use WpDigitalDriveCompetitions\Hooks\CompetitionsBackend\WooCommerceOrderStatusChangedHook;
 use WpDigitalDriveCompetitions\Hooks\WcProductCompetitions;
 
-
-
 /**
  * Hooks loader.
  */
