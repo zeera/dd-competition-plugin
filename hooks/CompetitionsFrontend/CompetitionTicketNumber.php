@@ -57,7 +57,6 @@ class CompetitionTicketNumber
                     $_competition_guest_email = $item_meta['_competition_guest_email'][0];
 
                     if ( $product_data && $product_data->get_type() == 'competition' ) {
-                        $adminHelper->dd('test', true, true);
                         if( $_my_competition_answer == $correctAnswer[0] ) {
                             $ticketNumbers = [];
                             if (apply_filters( 'add_ticket_numbers_from_order', true , $item, $order_id, $product_id ) ) {
