@@ -55,17 +55,17 @@ class CompetitionProcess extends AdminHelper
                     <input class="competition_answer" type="radio" name="competition_answer" value="<?php echo $answer_3[0]; ?>" id="<?php echo $answer_3[0]; ?>" required>
                     <label for="<?php echo $answer_3[0]; ?>"><?php echo $answer_3[0]; ?></label><br>
                     <?php
-                        if( !$current_user ) {
+                        //if( !$current_user ) {
                             ?>
-                                <div class="form-control" style="padding-top:10px;">
+                                <!-- <div class="form-control" style="padding-top:10px;">
                                     <label for="competition_email">
                                         <strong>Email:</strong>
                                         <input id="competition_email" class="competition_answer" type="email" name="competition_email" style="margin-top:10px;" >
                                         <small>Note: Clear your cart first if your going to use different email!</small>
                                     </label>
-                                </div>
+                                </div> -->
                             <?php
-                        }
+                        //}
                     ?>
                 </div>
                 <hr>
@@ -89,10 +89,10 @@ class CompetitionProcess extends AdminHelper
 
     public static function validateAnswer( $passed, $product_id, $quantity )
     {
-        $adminHelper = new AdminHelper;
-        $answer = $_POST['competition_answer'];
-        $email = $_POST['competition_email'];
-        $current_user = is_user_logged_in();
+        $adminHelper  = new AdminHelper;
+        $answer       = $_POST['competition_answer'];
+        $email        = $_POST['competition_email'];
+        $current_user = $adminHelper->isLoggedIn();
 
         if ( !$answer ) {
             wc_add_notice( __( ' Please select an answer!', 'woocommerce' ), 'error' );
@@ -100,25 +100,28 @@ class CompetitionProcess extends AdminHelper
             return $passed;
         }
 
-        if ( !$current_user && !$email ) {
-            wc_add_notice( __( ' Please enter Email!', 'woocommerce' ), 'error' );
-            $passed = false;
-            return $passed;
-        }
+        // if ( !$current_user && !$email ) {
+        //     wc_add_notice( __( ' Please enter Email!', 'woocommerce' ), 'error' );
+        //     $passed = false;
+        //     return $passed;
+        // }
 
-        if ( self::$guestEmail != '' ) {
-            $passed = true;
-            if( $email != self::$guestEmail  ) {
-                wc_add_notice( __( ' Your Using different email and you have items on your cart. Please clear your cart first when using different email!', 'woocommerce' ), 'error' );
-                $passed = false;
-            }
-            return $passed;
-        }
+        // if ( self::$guestEmail != '' ) {
+        //     $passed = true;
+        //     if( $email != self::$guestEmail  ) {
+        //         wc_add_notice( __( ' Your Using different email and you have items on your cart. Please clear your cart first when using different email!', 'woocommerce' ), 'error' );
+        //         $passed = false;
+        //     }
+        //     return $passed;
+        // }
 
-        $cartQty = self::getCartItems($product_id);
-        $passed = self::validateItems($quantity, $product_id, '', $cartQty);
+        if( $current_user ) {
+            $cartQty = self::getCartItems($product_id);
+            $passed = self::validateItems($quantity, $product_id, '', $cartQty);
+        }
 
         return $passed;
+
     }
 
     public static function onCartUpdate( $cart_updated ) {
@@ -126,9 +129,10 @@ class CompetitionProcess extends AdminHelper
         $items = $woocommerce->cart->get_cart();
         $cart_updated = true;
         $adminHelper = new AdminHelper();
-        if( $items ) {
+        $current_user = $adminHelper->isLoggedIn();
+        if( $current_user && $items ) {
             foreach ($items as $key => $item) {
-                // $adminHelper->dd($item, true);
+                // $adminHelper->dd($item, true, true);
                 $cartQty = $item['quantity'];
                 $product_id = $item['product_id'];
                 $cartItemKey = $item['key'];
@@ -138,7 +142,7 @@ class CompetitionProcess extends AdminHelper
         }
     }
 
-    public static function validateItems($qty, $productID, $cartItemKey = '', $cartQty = 0)
+    public static function validateItems($qty, $productID, $cartItemKey = '', $cartQty = 0, $email = '')
     {
         $ticketNumbers = new TicketNumbers;
         $adminHelper = new AdminHelper;
@@ -146,10 +150,13 @@ class CompetitionProcess extends AdminHelper
         $productData = wc_get_product( $productID );
         $maxQtyUser = get_post_meta($productID, '_maximum_ticket_per_user', true);
         $current_user = \wp_get_current_user();
-        $totalBought = $ticketNumbers->getTotalBoughtPerUser($productID, $current_user->ID);
+        $user = ( $adminHelper->isLoggedIn() ) ? $current_user->ID : $email;
+        $totalBought = $ticketNumbers->getTotalBoughtPerUser($productID, $user, $adminHelper->isLoggedIn());
         $totalBought = (int) $totalBought + (int) $cartQty;
         $remainingCredits = (int) $maxQtyUser - (int) $totalBought;
         $cart = WC()->cart;
+        $cartUrl = "<a href='".WPDIGITALDRIVE_COMPETITIONS_SITEURL."/cart' class='btn btn-success'>Go back to cart?</a>";
+        $cartHtml = $adminHelper->isLoggedIn() == false ? $cartUrl : '';
         if( $productData && $productData->get_type() == 'competition' ) {
             if ($totalBought < $maxQtyUser) {
                 if( $remainingCredits == $maxQtyUser ) {
@@ -157,7 +164,8 @@ class CompetitionProcess extends AdminHelper
                         if( $cartItemKey ) {
                             $cart->cart_contents[ $cartItemKey ]['quantity'] = $maxQtyUser;
                         }
-                        wc_add_notice(__('You can only bought at least ' .$maxQtyUser. ' ticket for this product: <strong> ' .$productData->name. ' </strong>', 'woocommerce'), 'error');
+                        $message = "You can only bought at least {$maxQtyUser} ticket for this product: <strong> {$productData->name} </strong>. {$cartHtml}";
+                        wc_add_notice(__($message, 'woocommerce'), 'error');
                         return false;
                     }
                     return true;
@@ -165,13 +173,15 @@ class CompetitionProcess extends AdminHelper
                     if( $cartItemKey ) {
                         $cart->cart_contents[ $cartItemKey ]['quantity'] = $remainingCredits;
                     }
-                    wc_add_notice(__('You have ' .$remainingCredits. ' remaining tickets for this product: <strong> ' .$productData->name. ' </strong>', 'woocommerce'), 'error');
+                    $message = "You have {$remainingCredits} remaining tickets for this product: <strong>{$productData->name}</strong>. {$cartHtml}";
+                    wc_add_notice(__($message, 'woocommerce'), 'error');
                     return false;
                 } else {
                     return true;
                 }
             } else {
-                wc_add_notice( __( 'You have reached the maximum ticket for this product: <strong> ' .$productData->name. ' </strong>', 'woocommerce' ), 'error' );
+                $message = "You have reached the maximum ticket for this product: <strong>{$productData->name}</strong>. {$cartHtml}";
+                wc_add_notice( __($message, 'woocommerce' ), 'error' );
                 return false;
             }
         } else {
@@ -179,10 +189,9 @@ class CompetitionProcess extends AdminHelper
         }
     }
 
-    public static function getCartItems($productID)
+    public static function getCartItems($productID = null)
     {
         $qty = 0;
-
         foreach (WC()->cart->get_cart() as $cart_item) {
             $product_in_cart = $cart_item['product_id'];
             if ($product_in_cart === $productID) {
@@ -195,9 +204,9 @@ class CompetitionProcess extends AdminHelper
 
     public static function addCartItemData ( $cartItemData, $productId, $variationId ) {
         $answer = $_POST['competition_answer'];
-        $email = $_POST['competition_email'];
+        //$email = $_POST['competition_email'];
         $cartItemData['_my_competition_answer'] = $answer;
-        $cartItemData['_competition_guest_email'] = $email;
+        //$cartItemData['_competition_guest_email'] = $email;
         return $cartItemData;
     }
 
@@ -206,11 +215,11 @@ class CompetitionProcess extends AdminHelper
             $cartItemData['_my_competition_answer'] = $cartItemSessionData['_my_competition_answer'];
         }
 
-        if ( isset( $cartItemSessionData['_competition_guest_email'] ) ) {
-            $cartItemData['_competition_guest_email'] = $cartItemSessionData['_competition_guest_email'];
-        }
+        // if ( isset( $cartItemSessionData['_competition_guest_email'] ) ) {
+        //     $cartItemData['_competition_guest_email'] = $cartItemSessionData['_competition_guest_email'];
+        // }
 
-        self::$guestEmail = $cartItemSessionData['_competition_guest_email'];
+        // self::$guestEmail = $cartItemSessionData['_competition_guest_email'];
 
         return $cartItemData;
     }
@@ -248,5 +257,22 @@ class CompetitionProcess extends AdminHelper
         }
 
         return $fields;
+    }
+
+    public static function guestValidation($fields, $errors)
+    {
+        $adminHelper = new AdminHelper();
+        $cartItems = WC()->cart->get_cart();
+        if( $fields['billing_email'] != '') {
+            foreach ( $cartItems as $key => $cartItem) {
+                $cartQty = $cartItem['quantity'];
+                $product_id = $cartItem['product_id'];
+                $cartItemKey = $cartItem['key'];
+                $status = self::validateItems($cartQty, $product_id, '', '', $fields['billing_email'] );
+                return $status;
+            }
+        } else {
+            $errors->add( 'validation', 'Email is required!' );
+        }
     }
 }

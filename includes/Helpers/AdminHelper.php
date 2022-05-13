@@ -50,4 +50,10 @@ class AdminHelper extends Controller
             return false;
         }
     }
+
+    public function isLoggedIn()
+    {
+        $user = is_user_logged_in();
+        return $user;
+    }
 }

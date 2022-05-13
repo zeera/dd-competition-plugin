@@ -24,7 +24,7 @@ class DatabaseStructure
                 `userid` bigint(20) unsigned NOT NULL,
                 `email` VARCHAR(300) DEFAULT NULL,
                 `order_id` bigint(20) UNSIGNED NOT NULL,
-                `ticket_number` varchar(200) DEFAULT NULL,
+                `ticket_number` bigint(20) DEFAULT NULL,
                 `answer` varchar(200) DEFAULT NULL,
                 `product_id` bigint(20) UNSIGNED NOT NULL,
                 `item_id` bigint(20) UNSIGNED NOT NULL,

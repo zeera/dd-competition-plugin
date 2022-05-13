@@ -52,8 +52,9 @@ class TicketNumbers extends TableHelper
         return [
             // 'id' => ['id', 'INT', true], //We dont need the id as its auto incremented
             'userid' => ['userid', 'INT', $required],
+            'email' => ['email', 'STRING', false],
             'order_id' => ['order_id', 'INT', $required],
-            'ticket_number' => ['ticket_number', 'STRING', $required, 200],
+            'ticket_number' => ['ticket_number', 'INT', $required, 200],
             'answer' => ['answer', 'STRING', false],
             'product_id' => ['product_id', 'INT', $required],
             'item_id' => ['item_id', 'INT', $required],
@@ -146,10 +147,26 @@ class TicketNumbers extends TableHelper
     /**
      * Validate Ticket Number
      */
-    public function isTicketNumberExist( $ticketNumber )
+    public function isTicketNumberExist( $ticketNumber, $productID )
     {
-        $ticketData = $this->queryWp("SELECT COUNT(*) as `total` FROM `#prefix_ticket_numbers` WHERE `ticket_number` = '%s'", [$ticketNumber]);
+        $ticketData = $this->queryWp("SELECT COUNT(*) as `total` FROM `#prefix_ticket_numbers` WHERE `ticket_number` = '%s' AND `product_id` = '%s'", [$ticketNumber, $productID]);
         return $ticketData[0]['total'];
+    }
+
+    public function generateTicketNumberByProduct($productID)
+    {
+        $ticketData = $this->queryWp("SELECT MAX(ticket_number) as 'latest' FROM `#prefix_ticket_numbers` WHERE `product_id` = '%s'", [$productID]);
+        $total = ($ticketData[0]['latest'] == NULL) ? 1 : $ticketData[0]['latest'];
+        if( $total > 0 ) {
+            $total += 1;
+        }
+        $ticketNumber = $total;
+        $count = $this->isTicketNumberExist($ticketNumber, $productID);
+        if( $count > 0 ) {
+            $this->generateTicketNumberByProduct($productID);
+        } else {
+            return $ticketNumber;
+        }
     }
 
     public function getTicketNumbersOnEachProduct($product_id, $order_id, $item_id) {
@@ -157,8 +174,16 @@ class TicketNumbers extends TableHelper
         return $ticketData;
     }
 
-    public function getTotalBoughtPerUser($product_id, $user_id) {
-        $ticketData = $this->queryWp("SELECT COUNT(*) as `total` FROM `#prefix_ticket_numbers` WHERE `product_id` = '%s' AND `userid` = '%s'", [$product_id, $user_id]);
+    public function getTotalBoughtPerUser($product_id, $user, $guest = false) {
+        $condition = '';
+        if( $guest ) {
+            $condition = 'userid';
+        } else {
+            $condition = 'email';
+        }
+
+        $query = "SELECT COUNT(*) as `total` FROM `#prefix_ticket_numbers` WHERE `product_id` = '%s' AND `$condition` = '%s'";
+        $ticketData = $this->queryWp($query, [$product_id, $user]);
         return $ticketData[0]['total'];
     }
 

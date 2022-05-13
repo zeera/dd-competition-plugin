@@ -47,11 +47,12 @@ class Loader
         add_action( 'admin_enqueue_scripts', [CompetitionSettings::class, 'enqueueColorPicker'] );
         add_action( 'admin_enqueue_scripts', [CompetitionSettings::class, 'enqueueStylesAndScripts'] );
         register_activation_hook( __FILE__, [ WooCommerceMetaBox::class, 'installTaxonomy'] );
-        remove_action( 'woocommerce_after_add_to_cart_button', [CompetitionProcess::class, 'displayNotice'] );
+        // remove_action( 'woocommerce_after_add_to_cart_button', [CompetitionProcess::class, 'displayNotice'] );
 
-        add_filter('woocommerce_checkout_fields', [ CompetitionProcess::class, 'setBillingFieldsReadOnly']);
-        // add_filter('woocommerce_default_address_fields', 'override_default_address_checkout_fields', 20, 1);
-        // add_filter('woocommerce_checkout_fields', 'custom_override_checkout_fields');
+        /** Admin
+         * ===================================== */
+        add_filter('manage_edit-product_columns', [ CompetitionsBackendProcess::class, 'showProductOrder'], 10, 2);
+        add_filter('manage_product_posts_custom_column', [ CompetitionsBackendProcess::class, 'addCustomButton'], 10, 2);
 
         /** Woocmmerce Hooks that requires Woo Classes
          * ===================================== */
@@ -82,10 +83,10 @@ class Loader
             add_action('woocommerce_order_status_completed', [ CompetitionTicketNumber::class, 'create']);
             add_action('woocommerce_before_order_itemmeta', [ CompetitionTicketNumber::class, 'addTicketNumberToOders'], 10, 3);
             add_filter('woocommerce_order_item_display_meta_key', [ CompetitionProcess::class, 'filterWcOrderItemDisplayMetaKey'], 20, 3 );
-
-            //ADMIN HOOKS
-            add_filter('manage_edit-product_columns', [ CompetitionsBackendProcess::class, 'showProductOrder'], 10, 2);
-            add_filter('manage_product_posts_custom_column', [ CompetitionsBackendProcess::class, 'addCustomButton'], 10, 2);
+            add_filter('woocommerce_after_checkout_validation', [ CompetitionProcess::class, 'guestValidation'], 20, 2 );
+            //add_filter('woocommerce_checkout_fields', [ CompetitionProcess::class, 'setBillingFieldsReadOnly']);
+            // add_filter('woocommerce_default_address_fields', 'override_default_address_checkout_fields', 20, 1);
+            // add_filter('woocommerce_checkout_fields', 'custom_override_checkout_fields');
         }
     }
 }
