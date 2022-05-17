@@ -93,8 +93,9 @@ class CompetitionProcess extends AdminHelper
         $answer       = $_POST['competition_answer'];
         $email        = $_POST['competition_email'];
         $current_user = $adminHelper->isLoggedIn();
+        $isQuestion =  get_post_meta($product_id, '_show_question', true);
 
-        if ( !$answer ) {
+        if ( $isQuestion == 'yes' && !$answer ) {
             wc_add_notice( __( ' Please select an answer!', 'woocommerce' ), 'error' );
             $passed = false;
             return $passed;

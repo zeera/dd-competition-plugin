@@ -22,9 +22,8 @@ class CompetitionTicketNumber
         //code here
     }
 
-    public static function create( $order_id ) {
-        $ticketNumbersModel = new TicketNumbers;
-        $competitionEmail = new CompetitionEmail;
+    public static function create( $order_id )
+    {
         $adminHelper = new AdminHelper;
         $order = new \WC_Order( $order_id );
         $billing_first_name  = $order->get_billing_first_name() ?? '';
@@ -52,60 +51,95 @@ class CompetitionTicketNumber
                     $product_data = wc_get_product( $product_id );
                     $correctAnswer = get_post_meta($product_id, '_correct_answer');
                     $question = get_post_meta($product_id, '_question');
+                    $showQuestion = get_post_meta($product_id, '_show_question');
                     $_my_competition_answer = $item_meta['_my_competition_answer'][0];
                     // $_competition_guest_email = $item_meta['_competition_guest_email'][0];
 
+                    //data array need for storing Ticket Number
+                    $request = array(
+                        'userid' => $order->get_user_id() ? $order->get_user_id() : 0,
+                        'email' => $billing_email,
+                        'order_id' => $order_id,
+                        'answer' => $_my_competition_answer,
+                        'product_id' => $product_id,
+                        'item_id' => $item_id,
+                    );
+
+                    //Success Email args
+                    $emailArgsSuccess = [
+                        'answer' => $_my_competition_answer,
+                        'correct_answer' => $correctAnswer[0],
+                        'competition_name' => $product_data->name,
+                        'question' => $question[0],
+                        'ticket_number' => '',
+                        'email' => $billing_email,
+                        'subject' => get_bloginfo().' - Competition',
+                        'status' => 'correct',
+                    ];
+
+                    //Fail Email args
+                    $emailArgsFail = [
+                        'answer' => $_my_competition_answer,
+                        'competition_name' => $product_data->name,
+                        'question' => $question[0],
+                        'email' => $billing_email,
+                        'subject' => get_bloginfo().' - Competition(Incorrect)',
+                        'status' => 'incorrect',
+                    ];
+
                     if ( $product_data && $product_data->get_type() == 'competition' ) {
-                        if( $_my_competition_answer == $correctAnswer[0] ) {
-                            $ticketNumbers = [];
-                            if (apply_filters( 'add_ticket_numbers_from_order', true , $item, $order_id, $product_id ) ) {
-                                for ( $i = 0; $i < $item_meta['_qty'][0]; $i++ ) {
-                                    $uniqueTicketNumber = $ticketNumbersModel->generateTicketNumberByProduct($product_id);
-                                    $request = array(
-                                        'userid' => $order->get_user_id() ? $order->get_user_id() : 0,
-                                        'email' => $billing_email,
-                                        'order_id' => $order_id,
-                                        'ticket_number' => $uniqueTicketNumber,
-                                        'answer' => $_my_competition_answer,
-                                        'product_id' => $product_id,
-                                        'item_id' => $item_id,
-                                    );
-                                    $result = $ticketNumbersModel->store($request);
-                                    if( $result ) {
-                                        array_push($ticketNumbers, $uniqueTicketNumber);
-                                    }
+                        if( $showQuestion[0] == 'yes' ) {
+                            if ($_my_competition_answer == $correctAnswer[0]) {
+                                $ticketNumber = self::creatTicketNumber($item_meta['_qty'][0], $request);
+                                if( count($ticketNumber) > 0) {
+                                    $emailArgsSuccess['ticket_number'] = $ticketNumber;
+                                    self::processEmail($emailArgsSuccess);
                                 }
+                            } else {
+                                self::processEmail($emailArgsFail);
                             }
-                            //send email
-                            $emailArgs = [
-                                'answer' => $_my_competition_answer,
-                                'correct_answer' => $correctAnswer[0],
-                                'competition_name' => $product_data->name,
-                                'question' => $question[0],
-                                'ticket_number' => $ticketNumbers,
-                                'email' => $billing_email,
-                                'subject' => get_bloginfo().' - Competition',
-                                'status' => 'correct',
-                            ];
-
-                            $competitionEmail->setEmail($emailArgs);
                         } else {
-                            $emailArgs = [
-                                'answer' => $_my_competition_answer,
-                                'competition_name' => $product_data->name,
-                                'question' => $question[0],
-                                'email' => $_competition_guest_email != '' ? $_competition_guest_email : $billing_email,
-                                'subject' => get_bloginfo().' - Competition(Incorrect)',
-                                'status' => 'incorrect',
-                            ];
-
-                            $competitionEmail->setEmail($emailArgs);
+                            $ticketNumber = self::creatTicketNumber($item_meta['_qty'][0], $request);
+                            if( count($ticketNumber) > 0) {
+                                $emailArgsSuccess['ticket_number'] = $ticketNumber;
+                                self::processEmail($emailArgsSuccess);
+                            }
                         }
                     }
                 }
             }
         }
+        return;
+    }
 
+    public static function creatTicketNumber( $itemMeta, $request )
+    {
+        $ticketNumbersModel = new TicketNumbers;
+        $ticketNumbers = [];
+        for ( $i = 0; $i < $itemMeta; $i++ ) {
+            $uniqueTicketNumber = $ticketNumbersModel->generateTicketNumberByProduct($request['product_id']);
+            $request = array(
+                'userid' => $request['userid'],
+                'email' => $request['email'],
+                'order_id' => $request['order_id'],
+                'ticket_number' => $uniqueTicketNumber,
+                'answer' => $request['answer'],
+                'product_id' => $request['product_id'],
+                'item_id' => $request['item_id'],
+            );
+            $result = $ticketNumbersModel->store($request);
+            if( $result ) {
+                array_push($ticketNumbers, $uniqueTicketNumber);
+            }
+        }
+
+        return $ticketNumbers;
+    }
+
+    public static function processEmail($request)
+    {
+        $competitionEmail = new CompetitionEmail;
+        $competitionEmail->setEmail($request);
         return;
     }
 
