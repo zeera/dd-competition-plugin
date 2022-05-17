@@ -199,16 +199,25 @@ class WooCommerceMetaBox extends AdminHelper
         $product->update_meta_data('_answer_2', sanitize_text_field($_POST['_answer_2']));
         $product->update_meta_data('_answer_3', sanitize_text_field($_POST['_answer_3']));
         $product->update_meta_data('_correct_answer', sanitize_text_field($_POST['_correct_answer']));
-        $product->update_meta_data('_maximum_ticket', wc_clean($_POST['_maximum_ticket']));
         $product->update_meta_data('_maximum_ticket_per_user', wc_clean($_POST['_maximum_ticket_per_user']));
         $product->update_meta_data('_default_basket', wc_clean($_POST['_default_basket']));
+
+        $totalSales = get_post_meta($post_id, 'total_sales', true);
+        $stockTotal = (int) $_POST['_maximum_ticket'] - (int) $totalSales;
+
+        if( $totalSales <= $_POST['_maximum_ticket'] ) {
+            $product->update_meta_data('_maximum_ticket', wc_clean($_POST['_maximum_ticket']));
+        }
 
         $product->save();
 
         $maximumTicket = $product->get_meta('_maximum_ticket', true) ? $product->get_meta('_maximum_ticket', true) : 10;
-        if( $maximumTicket > 0 ) {
-            update_post_meta( $post_id, '_manage_stock', 'yes' );
-            update_post_meta( $post_id, '_stock', wc_clean( $_POST['_maximum_ticket'] ));
+
+        if( $_POST['_maximum_ticket'] >= $totalSales  ) {
+            if( $maximumTicket > 0 ) {
+                update_post_meta( $post_id, '_manage_stock', 'yes' );
+                update_post_meta( $post_id, '_stock', wc_clean( $stockTotal ));
+            }
         }
     }
 }

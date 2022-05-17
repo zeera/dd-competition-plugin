@@ -31,4 +31,35 @@ class CompetitionsBackendProcess extends AdminHelper
 
         return $columns;
     }
+
+    public static function getPage( $key )
+    {
+        global $wpdb;
+        $page = $wpdb->get_results(
+            $wpdb->prepare("SELECT * FROM $wpdb->posts
+                WHERE post_type = 'page'
+                AND post_name
+                LIKE '%s'", '%'. $wpdb->esc_like( $key ) .'%'
+            ), OBJECT
+        );
+
+        return $page;
+    }
+    public static function createEntryListPage()
+    {
+
+        $self = new self;
+        $page = $self::getPage('entry-lists');
+        if ( count($page) <= 0 ) {
+            $my_post = array(
+                'post_title'   => 'Entry List',
+                'post_name' => 'entry-lists',
+                'post_content' => '[entry-lists-competition]',
+                'post_status'  => 'publish',
+                'post_author'  => 1,
+                'post_type'    => 'page'
+            );
+            wp_insert_post( $my_post );
+        }
+    }
 }
