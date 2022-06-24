@@ -3,6 +3,8 @@
 </div>
 <script src="<?php $this->loadJS('bootstrap.bundle.min.js')?>"></script>
 <script src="<?php $this->loadJS('boostrap-select.js')?>"></script>
+<script src="<?php $this->loadJS('dataTables.min.js')?>"></script>
+<script src="<?php $this->loadJS('dataTables.bootstrap5.min.js')?>"></script>
 <?php
 $this->generateJavaScript();
 foreach ($this->extra_jsfiles as $jsfilepath) {

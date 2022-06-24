@@ -6,10 +6,11 @@
   vertical-align: middle;
 }
 .select2-container .select2-selection--single {
+  margin-top:3px;
   box-sizing: border-box;
   cursor: pointer;
   display: block;
-  height: 28px;
+  height: 34px;
   user-select: none;
   -webkit-user-select: none;
 }

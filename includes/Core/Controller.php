@@ -295,12 +295,10 @@ class Controller extends Conversion
         if (strlen($this->default_modelname) == 0) {
             $this->default_modelname = $model_name;
         }
-
         if (isset($this->models[$model_name])) {
             return $this->models[$model_name];
         } else {
-            // $current_model = new ($model_path)();
-            $current_model = new $model_path;
+            $current_model = new ($model_path)();
             $this->models[$model_name] = $current_model;
             return $current_model;
         }
@@ -326,7 +324,6 @@ class Controller extends Conversion
     public function getOption(string $value, string $model_name = null)
     {
         $model_name = $model_name ?: $this->default_modelname;
-
         if (!isset($this->models[$model_name])) {
             return null;
         }

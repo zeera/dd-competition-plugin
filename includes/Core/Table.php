@@ -100,11 +100,13 @@ class Table
             $returnstring = "";
             // $productDetails = "";
             // If the call has result data
+            // var_dump($columns, count($columns));
             if (is_array($data) and count($data) > 0) {
 
                 foreach ($data as $row) {
                     $returnstring = $returnstring . "<tr>";
                     $lastid = '';
+
                     if ($columns === null || count($columns) === 0) {
                         return "No results found.";
                     }

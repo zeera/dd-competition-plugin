@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace WpDigitalDriveCompetitions\Hooks\CompetitionsFrontend;
 
 use WpDigitalDriveCompetitions\Helpers\AdminHelper;
-use WpDigitalDriveCompetitions\Models\TicketNumbers;
+use WpDigitalDriveCompetitions\Models\TicketNumber;
 
 class CompetitionProcess extends AdminHelper
 {
@@ -20,7 +20,7 @@ class CompetitionProcess extends AdminHelper
 
     public function __construct()
     {
-        $this->ticketNumbers = new TicketNumbers();
+        $this->ticketNumbers = new TicketNumber();
     }
 
     public static function drawDateTimeShow()
@@ -145,7 +145,7 @@ class CompetitionProcess extends AdminHelper
 
     public static function validateItems($qty, $productID, $cartItemKey = '', $cartQty = 0, $email = '')
     {
-        $ticketNumbers = new TicketNumbers;
+        $ticketNumbers = new TicketNumber;
         $adminHelper = new AdminHelper;
 
         $productData = wc_get_product( $productID );

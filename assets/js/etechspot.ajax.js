@@ -1,6 +1,6 @@
 //Build By Nicolas Wendell, Etechspot.
 //Updated 20/7/2018 - Bootstrap 4 pagination
-//Version 5 
+//Version 5
 
 function etech_ajaxSearch(identity) {
 	this.ajaxurl = "";
@@ -95,7 +95,7 @@ etech_ajaxSearch.prototype.updateFilters = function() {
 					newcontent = newcontent
 							+ "<div class='activefilterbox' id='filter:"
 							+ keys[i] + "' onclick='" + this.selfidentity
-							+ ".removeFilter(this)'> <a class='btn btn-success btn-lg' href='#' >" + id
+							+ ".removeFilter(this)'> <a class='btn btn-success btn-xs' href='#' >" + id
 							+ ":<br /> ";
 					for ( var m = 0; m < this.requestarray[keys[i]].length; m++) {
 						// console.log(m);
@@ -112,7 +112,7 @@ etech_ajaxSearch.prototype.updateFilters = function() {
 					newcontent = newcontent
 							+ "<div class='activefilterbox' id='filter:"
 							+ keys[i] + "' onclick='" + this.selfidentity
-							+ ".removeFilter(this)'> <a class='btn btn-success btn-lg' href='#' >" + id + ": "
+							+ ".removeFilter(this)'> <a class='btn btn-success btn-xs' href='#' >" + id + ": "
 							+ this.requestarray[keys[i]]
 							+ "&nbsp;&nbsp;&nbsp;<b>X</b> </a></div>&nbsp;&nbsp";
 				}
@@ -309,7 +309,7 @@ etech_ajaxSearch.prototype.alterId = function(data) {
 	var object = jQuery("input[id='" + curid.id + "']");
 	if (typeof (object.autocomplete) === 'function') {
 		//TODO: this errors under the most recent jquery
-		//object.autocomplete("disable"); 
+		//object.autocomplete("disable");
 	}
 
 	document.getElementsByName(data.id)[0].id = data.value;
@@ -343,7 +343,7 @@ etech_ajaxSearch.prototype.ajaxSuccess = function(data) {
 		var json = jQuery.parseJSON(data);
 	} catch (err) {
 		IS_JSON = false;
-		console.log("NOT JSON"); 
+		console.log("NOT JSON");
 		console.log(err);
 	}
 

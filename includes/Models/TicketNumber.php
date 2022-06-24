@@ -13,19 +13,22 @@ use WpDigitalDriveCompetitions\Helpers\TableHelper;
  * it extends tablehelper which has a lot of boilerplate/default functions useful for a model that uses a table
  * as its main data source.
  */
-class TicketNumbers extends TableHelper
+class TicketNumber extends TableHelper
 {
+
     /** Table name */
     public string $tableName = '#prefix_ticket_numbers';
 
     /**
      * Create a new model
      */
-    public function __construct()
+    public function construct()
     {
         $this->adminHelper = New AdminHelper();
     }
 
+    //There are default getquery and getcount query functions in the tableHelper
+    //overload the functions here to customise
 
     /** Validation array
      *
@@ -52,8 +55,12 @@ class TicketNumbers extends TableHelper
         return [
             // 'id' => ['id', 'INT', true], //We dont need the id as its auto incremented
             'userid' => ['userid', 'INT', $required],
+            'full_name' => ['full_name', 'STRING', false],
+            'club_name' => ['club_name', 'STRING', false],
             'email' => ['email', 'STRING', false],
+            'phone_number' => ['phone_number', 'STRING', false],
             'order_id' => ['order_id', 'INT', $required],
+            'cash_sale' => ['cash_sale', 'INT', false],
             'ticket_number' => ['ticket_number', 'INT', $required],
             'answer' => ['answer', 'STRING', false],
             'product_id' => ['product_id', 'INT', $required],
@@ -61,6 +68,12 @@ class TicketNumbers extends TableHelper
             'last_updated_by' => ['last_updated_by', 'STRING', false],
             'created_by' => ['created_by', 'STRING', false],
         ];
+
+    }
+
+    public function getEmailCount( $email ) {
+        $emailCount = $this->isEmailExists( $email );
+        return $emailCount;
     }
 
     public function getModelData( $id )
@@ -69,17 +82,44 @@ class TicketNumbers extends TableHelper
         return $modelData[0];
     }
 
-    public function store( $request ) {
+    /** Search vars
+     *
+     * These vars are used for the search functions on the model as well
+     * as auto populating the default search page.
+     *
+     * [key] = "name" of field from the query/data
+     * value[0] = The human readable name, to populate the headings
+     * value[1] = The method of searching on this field: 'match','like','wild','date' and 'in'
+     * value[2] = The table name in question, you will need to use different table names if the source query has a join
+     * value[3] = the search key override, this is when using alias "as" etc in the search conditions
+     *
+     * //See searchQueryBuilder which this creates data for
+     *
+     */
+    public function getSearchVars()
+    {
+        return [
+            'order_id' => ['Order ID', 'like', $this->tableName],
+            'email' => ['Email', 'like', $this->tableName],
+        ];
+    }
 
+    /** Insert function
+     *
+     * $postdata should be the passed post data for the given model update/insert/etc
+     *
+     * This function should be overloaded in the model if your table structure doesnt work with this function
+     */
 
-        // $this->adminHelper->dd($request,true ,true);
+    public function store($formData)
+    {
         $validation = $this->getValidationArray();
         $newId = null;
 
         $current_user = \wp_get_current_user();
 
-        $request['created_by'] = $current_user->user_login;
-        $request['last_updated_by'] = $current_user->user_login;
+        $formData['created_by'] = $current_user->user_login;
+        $formData['last_updated_by'] = $current_user->user_login;
 
         $criteriaArray = [
             'tablename' => $this->tableName,
@@ -95,7 +135,7 @@ class TicketNumbers extends TableHelper
         $resultarray = $this->validateData(
             $criteriaArray,
             $validation,
-            $request,
+            $formData,
             []
         );
 
@@ -113,12 +153,115 @@ class TicketNumbers extends TableHelper
                 true
             );
         }
+        if (count($this->errors) > 0) {
+            // $errors = $this->errors;
+            // $err = [];
+            // foreach ($errors as $key => $value) {
+            //     $err['errors'][] = [
+            //         'name' => $key,
+            //         'value' => $value
+            //     ];
+            // }
+            return false;
+        }
+
+        return $newId;
+    }
+
+
+    /** Update function
+     *
+     * $id is the unique id of this table
+     * $postdata should be the passed post data for the given model update/insert/etc
+     *
+     *
+     * This function should be overloaded in the model if your table structure doesnt work with this function
+     */
+    public function update(mixed $id, mixed $formData): bool
+    {
+        $validation = $this->getValidationArray(true);
+
+        if (!isset($id)) {
+            return false;
+        }
+        $current_user = \wp_get_current_user();
+
+
+        $formData['last_updated_by'] = $current_user->user_login;
+
+
+        $criteriaArray = [
+            'tablename' => $this->tableName,
+            'type' => 'update',
+            'conditions' => [
+                'id' => $id,
+            ],
+        ];
+
+        $resultarray = $this->validateData(
+            $criteriaArray,
+            $validation,
+            $formData,
+            ['last_updated' => 'now()'] //Additional data is not escaped, so if you set data here make sure to escape it properly first. Avoid using it unless you need to call a stored procedure or such
+        );
+
+        //We are setting the errors to the $this->errors array to make it easy to check on these from the calling controller
+        if (count($resultarray['errors']) > 0) {
+            $this->errors = $resultarray['errors'];
+        }
+
+        if (count($this->errors) == 0) {
+            $this->insertWp(
+                $resultarray['query'],
+                $resultarray['values'],
+            );
+        }
+
+        // var_dump( $this->errors );
 
         if (count($this->errors) > 0) {
             return false;
         }
 
-        return $newId;
+        return true;
+    }
+
+    /** Options
+     *
+     * Options are auto loaded, and are mostly used to populate table column definitions relating to the table
+     *
+     * And for dropdown options relating to the column
+     */
+    public function loadOptions()
+    {
+        //Adding some drop down options
+        $this->addOption('falsetrue', [
+            '0' => 'No',
+            '1' => 'Yes',
+        ]);
+
+        $this->addOption('mp_status', [
+            'approved' => 'Approve',
+            'declined' => 'Decline',
+        ]);
+
+        //Setting search options
+        $this->addOption('search_options', $this->getSearchOptions());
+
+        //Definition of ajax search table,
+        /**
+         * [field_name] => ['human readable column name','Type of table column',[... extra info based on table column requirements]]
+         * See Table.php for options
+         */
+        $this->addOption("columns", [
+            'id' => ['View', 'SPRINTFID', admin_url('admin.php?page=WpDigitalDriveCompetitions_cash_sales') .'&id=%s'],
+            'date_created' => ['Request Date', 'DATETIME'],
+            // 'id' => ['Requester Name', 'MODALLINKARRAY', 'view', [
+            //     'modelname' => 'requestModal',
+            //     'class' => '',
+            // ]],
+            'email' => ['Email', 'STRING'],
+        ]);
     }
 
     /**

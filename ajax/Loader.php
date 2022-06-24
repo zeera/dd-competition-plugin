@@ -32,7 +32,7 @@ class Loader
             if ($_GET['_report_type'] == 'woo-attributes') {
                 $class->report();
             } else {
-                $class->priceMatchingAjax();
+                $class->ticketNumberAjax();
             }
         }
     }

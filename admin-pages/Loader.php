@@ -17,9 +17,6 @@ class Loader
      */
     public static function init()
     {
-        $version = date("ymd-Gis", filemtime(WPDIGITALDRIVE_COMPETITIONS_PATH . 'assets/css/featured-competitions.css'));
-        wp_register_style('shortcode-table-style', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/css/shortcode-table.css?v=' . $version);
-
         add_action('admin_menu', [self::class, 'initAdminPages']);
     }
     /**
@@ -31,14 +28,10 @@ class Loader
         if( $adminHelper->isAdmin() ) {
             // Menu page
             add_menu_page(__("Competition"), __("Competition"), "administrator", WPDIGITALDRIVE_COMPETITIONS_NAMESPACE, '', WPDIGITALDRIVE_COMPETITIONS_URL . "assets/images/logo.svg", 85);
-
             // Sub menu pages (hooks for later if needed??)
             add_submenu_page(WPDIGITALDRIVE_COMPETITIONS_NAMESPACE, __("Dashboard"), __("Dashboard"), "administrator", WPDIGITALDRIVE_COMPETITIONS_NAMESPACE, [self::class, "menuPageDashboard"]);
-
             // add_submenu_page(WPDIGITALDRIVE_COMPETITIONS_NAMESPACE, __("Price Match Settings"), __("Price Match Settings"), "administrator", WPDIGITALDRIVE_COMPETITIONS_NAMESPACE . "_price-matching-modal-settings", [self::class, "menuPriceMatchingModal"]);
-
             add_submenu_page(WPDIGITALDRIVE_COMPETITIONS_NAMESPACE, __("Shortcodes"), __("Shortcodes"), "administrator", WPDIGITALDRIVE_COMPETITIONS_NAMESPACE . "_shortcode_list", [self::class, "menuShortcodes"]);
-
             add_submenu_page(WPDIGITALDRIVE_COMPETITIONS_NAMESPACE, __("Entry Lists"), __("Entry Lists"), "administrator", WPDIGITALDRIVE_COMPETITIONS_NAMESPACE . "_entry_lists", [self::class, "menuEntryList"]);
         }
 
@@ -50,15 +43,6 @@ class Loader
     public static function menuPageDashboard()
     {
         new \WpDigitalDriveCompetitions\AdminPages\Dashboard\Controller('index');
-    }
-
-
-    /**
-     * Price Matching
-     */
-    public static function menuPriceMatchingModal()
-    {
-        new \WpDigitalDriveCompetitions\AdminPages\MatchPricingModal\Controller();
     }
 
     /**

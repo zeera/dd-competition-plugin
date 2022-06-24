@@ -13,7 +13,7 @@ namespace WpDigitalDriveCompetitions\Hooks\CompetitionsFrontend;
 
 use WpDigitalDriveCompetitions\Helpers\AdminHelper;
 use WpDigitalDriveCompetitions\Hooks\CompetitionsBackend\CompetitionEmail;
-use WpDigitalDriveCompetitions\Models\TicketNumbers;
+use WpDigitalDriveCompetitions\Models\TicketNumber;
 
 class CompetitionTicketNumber
 {
@@ -58,6 +58,7 @@ class CompetitionTicketNumber
                     //data array need for storing Ticket Number
                     $request = array(
                         'userid' => $order->get_user_id() ? $order->get_user_id() : 0,
+                        'full_name' => $billing_first_name . ' ' . $billing_last_name,
                         'email' => $billing_email,
                         'order_id' => $order_id,
                         'answer' => $_my_competition_answer,
@@ -114,7 +115,7 @@ class CompetitionTicketNumber
 
     public static function creatTicketNumber( $itemMeta, $request )
     {
-        $ticketNumbersModel = new TicketNumbers;
+        $ticketNumbersModel = new TicketNumber;
         $ticketNumbers = [];
         for ( $i = 0; $i < $itemMeta; $i++ ) {
             $uniqueTicketNumber = $ticketNumbersModel->generateTicketNumberByProduct($request['product_id']);
@@ -144,7 +145,7 @@ class CompetitionTicketNumber
     }
 
     public static function addTicketNumberToOders( $item_id, $item, $_product ) {
-        $ticketNumbersModel = new TicketNumbers;
+        $ticketNumbersModel = new TicketNumber;
         $product_id = $_product->id;
         $order_id = $item['order_id'];
         $ticketNumbers = $ticketNumbersModel->getTicketNumbersOnEachProduct( $product_id, $order_id, $item_id );

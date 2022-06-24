@@ -78,7 +78,7 @@ class Loader
             add_action( 'woocommerce_update_cart_action_cart_updated', [ CompetitionProcess::class, 'onCartUpdate'], 20, 1 );
 
             //CHECKOUT HOOKS
-            add_action('woocommerce_order_status_processing', [ CompetitionTicketNumber::class, 'create']);
+            // add_action('woocommerce_order_status_processing', [ CompetitionTicketNumber::class, 'create']);
             add_action('woocommerce_order_status_completed', [ CompetitionTicketNumber::class, 'create']);
             add_action('woocommerce_before_order_itemmeta', [ CompetitionTicketNumber::class, 'addTicketNumberToOders'], 10, 3);
             add_filter('woocommerce_order_item_display_meta_key', [ CompetitionProcess::class, 'filterWcOrderItemDisplayMetaKey'], 20, 3 );

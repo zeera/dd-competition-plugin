@@ -23,7 +23,6 @@ class CompetitionSettings extends AdminHelper
 
     public static function enqueueStylesAndScripts()
     {
-
         $version = date("ymd-Gis", filemtime(WPDIGITALDRIVE_COMPETITIONS_PATH . 'assets/css/datetimepicker.css'));
         wp_register_style('datetimepicker-style', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/css/datetimepicker.css?v=' . $version);
         wp_enqueue_style("datetimepicker-style");
@@ -39,9 +38,13 @@ class CompetitionSettings extends AdminHelper
 
     public static function registerField()
     {
-        register_setting( 'digital_drive_competition_settings', 'maximum_ticket_default_value' );
-        register_setting( 'digital_drive_competition_settings', 'default_basket_quantity' );
-        register_setting( 'digital_drive_competition_settings', 'maximum_ticket_default_per_user' );
-        register_setting( 'digital_drive_competition_settings', 'textColor' );
+        register_setting('digital_drive_competition_settings', 'maximum_ticket_default_value');
+        register_setting('digital_drive_competition_settings', 'default_basket_quantity');
+        register_setting('digital_drive_competition_settings', 'maximum_ticket_default_per_user');
+        register_setting('digital_drive_competition_settings', 'answerBgColor');
+        register_setting('digital_drive_competition_settings', 'selectedAnswerBgColor');
+        register_setting('digital_drive_competition_settings', 'textColor');
+        register_setting('digital_drive_competition_settings', 'data_per_page');
+        register_setting('digital_drive_competition_settings', 'data_per_page_options');
     }
 }

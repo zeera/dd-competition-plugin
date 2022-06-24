@@ -7,9 +7,6 @@ namespace WpDigitalDriveCompetitions\Helpers;
 use WpDigitalDriveCompetitions\Core\Conversion;
 use WpDigitalDriveCompetitions\Core\Model;
 
-/**
- * Table Helper
- */
 class TableHelper extends Model
 {
 
@@ -104,7 +101,6 @@ class TableHelper extends Model
         foreach ($this->getSearchVars() as $key => $var) {
             $options[$key] = $var[0];
         }
-
         return $options;
     }
 

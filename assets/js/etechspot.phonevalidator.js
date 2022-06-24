@@ -7,18 +7,15 @@ function checkFullNumber() {
     inputVal = inputVal.replace(/(-|\s)/g,'');
 
 	jQuery(this).css({"border": ""});
-   if (inputVal == '') {
-		jQuery(this).css({"border": ""});
-    }
-    else if (!valid_number.test(inputVal)) {
-    	jQuery(this).css({"border": "1px solid red"});
-    } 
-    else if (valid_full_number.test(inputVal)) {
-    	jQuery(this).css({"border": "1px solid green"});
-    }
-    else if (incomplete_full_number.test(inputVal)) {
-    	jQuery(this).css({"border": "1px solid orange"});
+    if (inputVal == '') {
+        jQuery(this).css({"border": ""});
+    } else if (!valid_number.test(inputVal)) {
+        jQuery(this).css({"border": "1px solid red"});
+    } else if (valid_full_number.test(inputVal)) {
+        jQuery(this).css({"border": "1px solid green"});
+    } else if (incomplete_full_number.test(inputVal)) {
+        jQuery(this).css({"border": "1px solid orange"});
     } else {
-    	jQuery(this).css({"border": "1px solid red"});
+        jQuery(this).css({"border": "1px solid red"});
     }
 }

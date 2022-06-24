@@ -17,12 +17,12 @@ use WpDigitalDriveCompetitions\Helpers\AjaxHelper;
  */
 class AdminCalls extends AjaxHelper
 {
-    public function priceMatchingAjax()
+    public function ticketNumberAjax()
     {
         header('Content-type: application/json; charset=utf-8');
 
-        /** @var \WpDigitalDriveCompetitions\Models\LogModel $model */
-        $model = $this->loadModel('PriceMatch', '\WpDigitalDriveCompetitions\Models\PriceMatch');
+        /** @var \WpDigitalDriveCompetitions\Models\TicketNumber $model */
+        $model = $this->loadModel('TicketNumber', '\WpDigitalDriveCompetitions\Models\TicketNumber');
         $vars = $_POST;
 
         //Mapping changed criteria
@@ -36,7 +36,6 @@ class AdminCalls extends AjaxHelper
             $vars['return_all_results'] =   99999999999999999;
 
         $search = $model->search($vars);
-
         if (!isset($vars['return_csv'])) {
             $returnarray = array(
                 'result_count' => $search['result_count']['results'] ?? 0,
@@ -50,15 +49,15 @@ class AdminCalls extends AjaxHelper
             foreach ($data[0] ?? [] as $key => $value) {
                 $keyarray[] = $key;
             }
-            $this->excelExport('Logs', $keyarray, $data, ['brand_text' => 'LOGS']);
+            $this->excelExport('Logs', $keyarray, $data, ['brand_text' => 'TicketNumber']);
         }
         wp_die(); //important to call after a response
     }
 
     public function report()
     {
-        /** @var \WpDigitalDriveCompetitions\Models\PriceMatch $model */
-        $model = $this->loadModel('PriceMatch', '\WpDigitalDriveCompetitions\Models\PriceMatch');
+        /** @var \WpDigitalDriveCompetitions\Models\TicketNumber $model */
+        $model = $this->loadModel('TicketNumber', '\WpDigitalDriveCompetitions\Models\TicketNumber');
 
         $data = [];
         $datacols = ['ID','post_type','post_parent','post_title','post_name','post_status'];

@@ -7,7 +7,6 @@ declare(strict_types=1);
 
 namespace WpDigitalDriveCompetitions\AdminPages\Dashboard;
 use WpDigitalDriveCompetitions\Helpers\AdminHelper;
-use WpDigitalDriveCompetitions\Hooks\PriceMatchProcess;
 
 /**
  * Controller for the dashboard
@@ -16,8 +15,6 @@ class Controller extends AdminHelper
 {
     /** Controller */
     protected string $controller = 'dashboard';
-    protected $product = [];
-    protected $modelData = [];
 
     /**
      * Index
