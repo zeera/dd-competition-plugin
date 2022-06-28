@@ -287,6 +287,18 @@ class TicketNumber extends TableHelper
         }
     }
 
+    public function getAllTickets( $productID )
+    {
+        if( $productID ) {
+            $query = "SELECT * FROM `#prefix_ticket_numbers` WHERE `product_id` = '%s'";
+        } else {
+            $productID = 1;
+            $query = "SELECT * FROM `#prefix_ticket_numbers` WHERE `cash_sale` = '%s'";
+        }
+        $ticketData = $this->queryWp($query, [$productID]);
+        return $ticketData;
+    }
+
     /**
      * Validate Ticket Number
      */

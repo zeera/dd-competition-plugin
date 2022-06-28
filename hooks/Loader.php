@@ -52,6 +52,7 @@ class Loader
         add_filter('manage_edit-product_columns', [ CompetitionsBackendProcess::class, 'showProductOrder'], 10, 2);
         add_filter('manage_product_posts_custom_column', [ CompetitionsBackendProcess::class, 'addCustomButton'], 10, 2);
         add_action('admin_init', [CompetitionsBackendProcess::class, 'createEntryListPage']);
+        add_action( 'rest_api_init', [CompetitionsBackendProcess::class, 'exportApi'] );
 
         /** Woocmmerce Hooks that requires Woo Classes
          * ===================================== */
@@ -65,6 +66,7 @@ class Loader
             add_action('woocommerce_before_add_to_cart_quantity', [ CompetitionProcess::class, 'drawDateTimeShow']);
             // add_action('woocommerce_after_add_to_cart_form', [ CompetitionProcess::class, 'countdownTimer']);
             add_action('wp_enqueue_scripts', [CompetitionProcess::class, 'cartScripts']);
+            add_action( 'woocommerce_single_product_summary', [ CompetitionsBackendProcess::class, 'checkPage' ] );
 
             //CART HOOKS
             add_action("woocommerce_competition_add_to_cart", function () {
@@ -75,7 +77,7 @@ class Loader
             add_action('woocommerce_get_cart_item_from_session', [ CompetitionProcess::class, 'getCartItemFromSession'], 10, 3);
             add_action('woocommerce_get_item_data', [ CompetitionProcess::class, 'getItemData'], 10, 2);
             add_action('woocommerce_add_order_item_meta', [ CompetitionProcess::class, 'addOrderItemMeta'], 10, 3);
-            add_action( 'woocommerce_update_cart_action_cart_updated', [ CompetitionProcess::class, 'onCartUpdate'], 20, 1 );
+            add_action('woocommerce_update_cart_action_cart_updated', [ CompetitionProcess::class, 'onCartUpdate'], 20, 1);
 
             //CHECKOUT HOOKS
             // add_action('woocommerce_order_status_processing', [ CompetitionTicketNumber::class, 'create']);
