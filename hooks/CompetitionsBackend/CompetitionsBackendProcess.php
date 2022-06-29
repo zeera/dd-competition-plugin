@@ -159,17 +159,21 @@ class CompetitionsBackendProcess extends AdminHelper
         $version = date("ymd-Gis", filemtime(WPDIGITALDRIVE_COMPETITIONS_PATH . 'assets/css/bootstrap.min.css'));
         wp_register_style('competition-bootstrap-styles', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/css/bootstrap.min.css?v=' . $version);
 
+        $version = date("ymd-Gis", filemtime(WPDIGITALDRIVE_COMPETITIONS_PATH . 'assets/css/compiled/single-product.css'));
+        wp_register_style('competition-single-product-styles', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/css/compiled/single-product.css?v=' . $version);
+
         $version = date("ymd-Gis", filemtime(WPDIGITALDRIVE_COMPETITIONS_PATH . 'assets/js/bootstrap.bundle.min.js'));
         wp_register_script('competition-bootstrap-script', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/js/competition.js?v=' . $version, array('jquery'), '', true);
-        
-        if(is_single('product')){
+
+        if(is_singular('product')) {
             if( $productData->get_type() == 'competition' ) {
-    
+
                 /** enqueue necessary styles and scripts
                  * ===================================== */
                 wp_enqueue_style("competition-bootstrap-styles");
+                wp_enqueue_style("competition-single-product-styles");
                 wp_enqueue_script("competition-bootstrap-script");
-    
+
                 /** remove default data arrangement
                  * ===================================== */
                 remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_title', 5 );
@@ -193,14 +197,18 @@ class CompetitionsBackendProcess extends AdminHelper
                 <div class="container">
                     <div class="row align-items-center justify-content-center">
                         <div class="col text-center">
-                            <h1 class="text-uppercase fw-bold" style="color:<?= get_option('top_info_heding_color') ?>"><?= $productData->name; ?></h1>
+                            <div class="heading">
+                                <div class="right-border"></div>
+                                <h1 class="text-uppercase fw-bold" style="color:<?= get_option('top_info_heding_color') ?>"><?= $productData->name; ?></h1>
+                                <div class="left-border"></div>
+                            </div>
                         </div>
                     </div>
                     <div class="row align-items-center justify-content-center">
                         <div class="col-12 col-md-4">
                             <div
-                                class="fw-medium py-3 px-2 rounded d-flex flex-row align-items-center justify-content-center text-uppercase"
-                                style="color:<?= get_option('top_info_text_color'); ?> font-size:17px; background: linear-gradient(180deg, <?= get_option('top_info_background_color_one'); ?> 0%, <?= get_option('top_info_background_color_two'); ?> 100%);">
+                                class="top-data fw-medium py-3 px-2 rounded d-flex flex-row align-items-center justify-content-center text-uppercase"
+                                style="color:<?= get_option('top_info_text_color'); ?>; background: linear-gradient(180deg, <?= get_option('top_info_background_color_one'); ?> 0%, <?= get_option('top_info_background_color_two'); ?> 100%);">
                                 <?php
                                     $date = $productData->get_meta('_draw_date_and_time', true);
                                     $date = date("jS F Y \@ h:i A", strtotime($date));
@@ -214,8 +222,8 @@ class CompetitionsBackendProcess extends AdminHelper
                         </div>
                         <div class="col-12 col-md-4">
                             <div
-                                class="fw-medium py-3 px-2 rounded d-flex flex-row align-items-center justify-content-center text-uppercase"
-                                style="color:<?= get_option('top_info_text_color'); ?> font-size:17px; background: linear-gradient(180deg, <?= get_option('top_info_background_color_one'); ?> 0%, <?= get_option('top_info_background_color_two'); ?> 100%);">
+                                class="top-data fw-medium py-3 px-2 rounded d-flex flex-row align-items-center justify-content-center text-uppercase"
+                                style="color:<?= get_option('top_info_text_color'); ?>; background: linear-gradient(180deg, <?= get_option('top_info_background_color_one'); ?> 0%, <?= get_option('top_info_background_color_two'); ?> 100%);">
                                 <?php
                                     $tickets = $productData->get_meta('_maximum_ticket', true);
                                 ?>
@@ -238,8 +246,8 @@ class CompetitionsBackendProcess extends AdminHelper
                         </div>
                         <div class="col-12 col-md-4">
                             <div
-                                class="fw-medium py-3 px-2 rounded d-flex flex-row align-items-center justify-content-center text-uppercase"
-                                style="color:<?= get_option('top_info_text_color'); ?> font-size:17px; background: linear-gradient(180deg, <?= get_option('top_info_background_color_one'); ?> 0%, <?= get_option('top_info_background_color_two'); ?> 100%);">
+                                class="top-data fw-medium py-3 px-2 rounded d-flex flex-row align-items-center justify-content-center text-uppercase"
+                                style="color:<?= get_option('top_info_text_color'); ?>; background: linear-gradient(180deg, <?= get_option('top_info_background_color_one'); ?> 0%, <?= get_option('top_info_background_color_two'); ?> 100%);">
                                 <?php
                                     $ticketsPerUser = $productData->get_meta('_maximum_ticket_per_user', true);
                                 ?>

@@ -12,7 +12,7 @@ var cssmin = require('gulp-cssmin');
 
 gulp.task('page-sass', function () {
     return gulp.src(
-        "assets/sass/*.scss"
+        "assets/sass/page/*.scss"
     )
     .pipe( sass().on( "error", sass.logError ) )
     .pipe( prefixer( "last 2 versions" ) )
@@ -30,5 +30,5 @@ gulp.task('page-sass', function () {
 });
 
 gulp.task( "watch", function(){
-    gulp.watch( "assets/sass/*.scss", gulp.series(["page-sass" ]) );
+    gulp.watch( "assets/sass/page/*.scss", gulp.series(["page-sass" ]) );
 });

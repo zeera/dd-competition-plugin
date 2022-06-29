@@ -41,6 +41,12 @@ class Loader
         add_shortcode( 'featured-competitions', [self::class, "displayFeaturedCompetition"] );
         add_shortcode( 'all-competitions', [self::class, "displayAllCompetition"] );
         add_shortcode( 'entry-lists-competition', [self::class, "displayEntryListsCompetition"] );
+        add_shortcode( 'do-product-summary', [self::class, "doWooProductSummary"] );
+    }
+
+    public static function doWooProductSummary()
+    {
+        do_action( 'woocommerce_single_product_summary' );
     }
 
     public static function displayFeaturedCompetition($attr){
