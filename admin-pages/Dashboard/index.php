@@ -43,7 +43,7 @@
                                         id="buttonText"
                                         type="text"
                                         name="data_per_page"
-                                        value="<?php echo get_option('data_per_page') ? get_option('data_per_page') : ''; ?>">
+                                        value="<?php echo get_option('data_per_page') ? get_option('data_per_page') : '20'; ?>">
                                 </div>
                             </div>
                             <div class="form-group col">
@@ -54,7 +54,7 @@
                                         id="buttonText"
                                         type="text"
                                         name="data_per_page_options"
-                                        value="<?php echo get_option('data_per_page_options') ? get_option('data_per_page_options') : ''; ?>">
+                                        value="<?php echo get_option('data_per_page_options') ? get_option('data_per_page_options') : '20,30,40,50,100,200'; ?>">
                                     <span class="small description">numbers separated by comma (eg: 5,10,15,20)</span class="small description">
                                 </div>
                             </div>
