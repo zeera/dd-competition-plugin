@@ -67,23 +67,47 @@
     <div id="frontend_styles" class="tab-content frontend-styles-wrapper">
         <div class="row">
             <div class="col">
-                <div class="card card-border p-0 mw-100">
+                <div class="card h-100 card-border p-0 mw-100">
                     <div class="card-header bg-dark">
                         <h4 class="card-title mb-0 fs-5 fw-bold text-white">Question and Answer Custom Styles</h4>
                     </div>
                     <div class="card-body">
-                        <div class="row">
-                            <div class="form-group col">
-                                <label for="textColor">Text Color: </label>
+                        <div class="row align-items-center">
+                            <div class="form-group col-6">
+                                <label class="d-block mb-2" for="textColor">Text Color: </label>
                                 <input class="colorField form-control" id="textColor" type="text" name="text_color" data-default-color="#81d742" value="<?php echo get_option('text_color') ? get_option('text_color') : '#81d742'; ?>">
                             </div>
-                            <div class="form-group col">
-                                <label for="textColor">Answer Background Color: </label>
+                            <div class="form-group col-6">
+                                <label class="d-block mb-2" for="textColor">Answer Background Color: </label>
                                 <input class="colorField form-control" id="textColor" type="text" name="answerBgColor" data-default-color="#81d742" value="<?php echo get_option('answerBgColor') ? get_option('answerBgColor') : '#81d742'; ?>">
                             </div>
-                            <div class="form-group col">
-                                <label for="textColor">Selected Answer Background Color: </label>
+                            <div class="form-group col-6">
+                                <label class="d-block mb-2" for="textColor">Selected Answer Background Color: </label>
                                 <input class="colorField form-control" id="textColor" type="text" name="selectedAnswerBgColor" data-default-color="#81d742" value="<?php echo get_option('selectedAnswerBgColor') ? get_option('selectedAnswerBgColor') : '#81d742'; ?>">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 card-border p-0 mw-100">
+                    <div class="card-header bg-dark">
+                        <h4 class="card-title mb-0 fs-5 fw-bold text-white">Top Info Styles</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="form-group col-6">
+                                <label class="d-block mb-2" for="textColor">Top Info Heading Color: </label>
+                                <input class="colorField form-control" id="textColor" type="text" name="top_info_heding_color" data-default-color="#81d742" value="<?php echo get_option('top_info_heding_color') ? get_option('top_info_heding_color') : '#81d742'; ?>">
+                            </div>
+                            <div class="form-group col-6">
+                                <label class="d-block mb-2" for="textColor">Top Info Background Color: </label>
+                                <input class="colorField form-control" id="textColor" type="text" name="top_info_background_color_one" data-default-color="#81d742" value="<?php echo get_option('top_info_background_color_one') ? get_option('top_info_background_color_one') : '#81d742'; ?>">
+                                <input class="colorField form-control" id="textColor" type="text" name="top_info_background_color_two" data-default-color="#81d742" value="<?php echo get_option('top_info_background_color_two') ? get_option('top_info_background_color_two') : '#81d742'; ?>">
+                            </div>
+                            <div class="form-group col-6">
+                                <label class="d-block mb-2" for="textColor">Top Info Text Color: </label>
+                                <input class="colorField form-control" id="textColor" type="text" name="top_info_text_color" data-default-color="#81d742" value="<?php echo get_option('top_info_text_color') ? get_option('top_info_text_color') : '#81d742'; ?>">
                             </div>
                         </div>
                     </div>

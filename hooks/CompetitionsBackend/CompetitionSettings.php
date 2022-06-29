@@ -46,5 +46,9 @@ class CompetitionSettings extends AdminHelper
         register_setting('digital_drive_competition_settings', 'textColor');
         register_setting('digital_drive_competition_settings', 'data_per_page');
         register_setting('digital_drive_competition_settings', 'data_per_page_options');
+        register_setting('digital_drive_competition_settings', 'top_info_background_color_one');
+        register_setting('digital_drive_competition_settings', 'top_info_background_color_two');
+        register_setting('digital_drive_competition_settings', 'top_info_text_color');
+        register_setting('digital_drive_competition_settings', 'top_info_heding_color');
     }
 }
