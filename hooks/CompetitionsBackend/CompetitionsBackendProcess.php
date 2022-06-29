@@ -161,23 +161,25 @@ class CompetitionsBackendProcess extends AdminHelper
 
         $version = date("ymd-Gis", filemtime(WPDIGITALDRIVE_COMPETITIONS_PATH . 'assets/js/bootstrap.bundle.min.js'));
         wp_register_script('competition-bootstrap-script', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/js/competition.js?v=' . $version, array('jquery'), '', true);
-
-        if( $productData->get_type() == 'competition' ) {
-
-            /** enqueue necessary styles and scripts
-             * ===================================== */
-            wp_enqueue_style("competition-bootstrap-styles");
-            wp_enqueue_script("competition-bootstrap-script");
-
-            /** remove default data arrangement
-             * ===================================== */
-            remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_title', 5 );
-            remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_rating', 10 );
-            remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_price', 10 );
-            remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_excerpt', 20 );
-            remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
-            remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_meta', 40 );
-            remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_sharing', 50 );
+        
+        if(is_single('product')){
+            if( $productData->get_type() == 'competition' ) {
+    
+                /** enqueue necessary styles and scripts
+                 * ===================================== */
+                wp_enqueue_style("competition-bootstrap-styles");
+                wp_enqueue_script("competition-bootstrap-script");
+    
+                /** remove default data arrangement
+                 * ===================================== */
+                remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_title', 5 );
+                remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_rating', 10 );
+                remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_price', 10 );
+                remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_excerpt', 20 );
+                remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
+                remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_meta', 40 );
+                remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_sharing', 50 );
+            }
         }
     }
 
