@@ -31,6 +31,7 @@ class Loader
         wp_register_style('bootstrap-style', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/css/bootstrap.min.css?v=' . $version, true);
         wp_register_style('entrylists-datatable-style', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/css/dataTables.min.css?v=' . $version, true);
         wp_register_style('entry-lists-style', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/css/entry-lists.css?v=' . $version);
+        wp_register_style('competition-listing-style', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/css/compiled/competition-listing.css?v=' . $version);
 
         wp_register_script('featured-competition-scripts', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/js/featured-competitions.js?v=' . $version, array('jquery'), '', true);
         wp_register_script('bootstrap-scripts', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/js/bootstrap.bundle.min.js?v=' . $version, array('jquery'), '', true);
@@ -71,8 +72,8 @@ class Loader
     }
 
     public static function displayAllCompetition($attr){
-        if(!wp_style_is('featured-competition-style')) {
-            wp_enqueue_style("featured-competition-style");
+        if(!wp_style_is('competition-listing-style')) {
+            wp_enqueue_style("competition-listing-style");
         }
         if(!wp_script_is('featured-competition-scripts')) {
             wp_enqueue_script("featured-competition-scripts");

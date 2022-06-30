@@ -1,0 +1,249 @@
+@media screen {
+  .competition-listing-section {
+    margin: 0 auto;
+    max-width: 1320px;
+    .competition-list-heading {
+      margin: 0;
+      text-align: left;
+      .section-title {
+        color: #121315;
+        font-family: inherit;
+        font-size: 36px;
+        font-weight: bold;
+        line-height: 43.2px;
+        text-transform: uppercase;
+      }
+    }
+    .competition-listing-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 0 -15px;
+      .competition-item {
+        flex: 0 1 auto;
+        margin-bottom: 30px;
+        padding: 0 15px;
+        width: 100%;
+        @media (min-width: 768px) {
+          width: 50%;
+        }
+        @media (min-width: 992px) {
+          width: 33.33%;
+        }
+        .competition-box {
+          background: #34363A;
+          border-radius: 10px;
+          display: block;
+          padding: 13px 14px;
+          text-decoration: none;
+          .competition-feat-img {
+            margin-bottom: 10px;
+            img {
+              height: auto;
+              width: 100%;
+            }
+          }
+          .competition-content {
+            padding-bottom: 74px;
+            position: relative;
+            .draw-date-wrap {
+              align-items: center;
+              background: #F8BC00;
+              border-radius: 6px;
+              display: flex;
+              justify-content: center;
+              padding: 4px 5px 5px;
+              &.closed {
+                background: #646464;
+              }
+              &.draw-today {
+                background: #EB001B;
+              }
+              &.draw-tomorrow {
+                background: #F87102;
+              }
+              h4 {
+                color: #fff;
+                font-family: 'Barlow Condensed';
+                font-size: 16px;
+                font-weight: 700;
+                line-height: 18px;
+                margin: 0;
+                text-align: center;
+                text-transform: uppercase;
+              }
+            }
+            .countdown-wrap {
+              border: 1px solid #666666;
+              border-radius: 6px;
+              margin-top: 10px;
+              padding: 3px 0 3px;
+              .countdown {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                .count-item {
+                  flex: 0 1 auto;
+                  text-align: center;
+                  width: 25%;
+                  .count-value {
+                    color: #FFFFFF;
+                    font-family: 'Barlow Condensed';
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: 25px;
+                    line-height: 24px;
+                    text-align: center;
+                  }
+                  label {
+                    color: #FFFFFF;
+                    font-family: 'Barlow';
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 11px;
+                    line-height: 11px;
+                    text-align: center;
+                    text-transform: capitalize;
+                  }
+                }
+              }
+            }
+            .sold-wrap {
+              padding: 14px 0 21px;
+              .progress-wrapper {
+                background: linear-gradient(0deg, #666666, #666666), #E7E7E7;
+                border-radius: 2px;
+                overflow: hidden;
+                position: relative;
+                .mini-label {
+                  color: #FFFFFF;
+                  font-family: 'Barlow';
+                  font-style: normal;
+                  font-weight: 700;
+                  font-size: 13px;
+                  line-height: 13px;
+                  text-align: right;
+                  position: absolute;
+                  right: 5px;
+                  top: 50%;
+                  transform: translateY(-50%);
+                  z-index: 50;
+                }
+                .progress-bar {
+                  background: linear-gradient(0deg, #DFCD83, #DFCD83), #E7E7E7;
+                  border-radius: 2px;
+                  color: #fff;
+                  display: flex;
+                  flex-direction: column;
+                  height: 20px;
+                  justify-content: center;
+                  overflow: visible;
+                  position: relative;
+                  text-align: center;
+                  white-space: nowrap;
+                  width: 0;
+                  .percentage-marker {
+                    color: #000000;
+                    font-family: 'Barlow';
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: 13px;
+                    left: 50%;
+                    line-height: 13px;
+                    position: absolute;
+                    text-align: center;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                  }
+                }
+              }
+            }
+            .price-wrap {
+              text-align: center;
+              h4 {
+                color: #FFFFFF;
+                font-family: 'Barlow Condensed';
+                font-style: normal;
+                font-weight: 400;
+                font-size: 18px;
+                line-height: 15px;
+                margin: 0;
+                text-align: center;
+                text-transform: lowercase;
+              }
+              span {
+                color: #FFFA8B;
+                font-family: 'Barlow Condensed';
+                font-style: normal;
+                font-weight: 700;
+                font-size: 28px;
+                line-height: 15px;
+                margin: 0;
+                text-align: center;
+                text-transform: uppercase;
+              }
+            }
+            .short-desc-wrap {
+              color: #FFFFFF;
+              font-family: 'Barlow Condensed';
+              font-style: normal;
+              font-weight: 700;
+              font-size: 28px;
+              line-height: 28px;
+              margin-top: 10px;
+              text-align: center;
+            }
+            .btn-wrap {
+              bottom: 0;
+              left: 0;
+              position: absolute;
+              right: 0;
+              .btn-addtocart {
+                align-items: center;
+                background: #52B77B;
+                border-radius: 6px;
+                color: #FFFFFF;
+                display: flex;
+                font-family: 'Barlow Condensed';
+                font-style: normal;
+                font-weight: 700;
+                font-size: 18px;
+                line-height: 22px;
+                height: 64px;
+                justify-content: center;
+                padding: 10px 15px;
+                text-align: center;
+                text-transform: uppercase;
+                width: 100%;
+                &.closed {
+                  background: #646464;
+                  pointer-events: none;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .competition-listing-viewall-btn {
+      margin: 20px auto;
+      max-width: 400px;
+      .btn-viewall {
+        display: flex;
+        align-items: center;
+        border: 1px solid #b88d2e;
+        color: #121315;
+        display: flex;
+        font-size: 22px;
+        font-weight: 600;
+        height: 55px;
+        justify-content: center;
+        padding: 10px 15px;
+        text-align: center;
+        text-decoration: none;
+        text-transform: uppercase;
+        width: 100%;
+      }
+    }
+  }
+}

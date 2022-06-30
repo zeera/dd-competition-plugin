@@ -33,8 +33,8 @@ jQuery(document).ready(function ($) {
     //     setCounterData(count, $(".countdown"));
     // }, 1000);
 
-    if ($('.featured-competitions-wrapper').length > 0) {
-        $('.featured-competitions-wrapper .competition-item').each(function (e) {
+    if ($('.competition-listing-section').length > 0) {
+        $('.competition-listing-section .competition-item').each(function (e) {
             var targetDate = $(this).data('enddate');
             const days = $(this).find(".e-m-days");
             const hours = $(this).find(".e-m-hours");

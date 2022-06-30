@@ -21,12 +21,12 @@ class AllCompetitions
             'order'               => $order,
         ) );
 ?>
-    <div class='featured-competition-section'>
-        <div class="featured-competition-heading">
+    <div class="competition-listing-section">
+        <div class="competition-list-heading">
             <h2 class="section-title"><?= $heading_title; ?></h2>
         </div>
         <?php if( $query->have_posts() ): ?>
-            <div class="featured-competitions-wrapper">
+            <div class="competition-listing-wrapper">
                 <?php while ($query->have_posts()) : $query->the_post(); ?>
                     <?php
                         $product = wc_get_product( get_the_id() );
@@ -39,7 +39,7 @@ class AllCompetitions
                             $sales_percentage = ((int)$total_sold/(int)$stock_qty) * 100;
                         }
                     ?>
-                    <div class="competition-item" data-enddate="<?= $end_date; ?>">
+                    <div class="competition-item" data-enddate="<?= date('m/d/Y g:i a', strtotime($end_date)); ?>">
                         <a href="<?= get_the_permalink(); ?>" class="competition-box">
                             <div class="competition-feat-img">
                                 <?= wp_get_attachment_image( $product->get_image_id(), 'full' ); ?>
@@ -48,10 +48,10 @@ class AllCompetitions
                                 <?php if($product->get_type() == 'competition'): ?>
                                     <div class="draw-date-wrap">
                                         <?php if(get_post_meta(get_the_id(), '_draw_date_and_time')): ?>
-                                            <?php if(date("D jS M") > date('D jS M', strtotime(get_post_meta( get_the_id(), '_draw_date_and_time')[0]))): ?>
+                                            <?php if(date("jS F Y") > date('jS F Y', strtotime(get_post_meta( get_the_id(), '_draw_date_and_time')[0]))): ?>
                                                 <h4>EXPIRED</h4>
                                             <?php else: ?>
-                                                <h4>Draw <?= date('D jS M', strtotime(get_post_meta( get_the_id(), '_draw_date_and_time')[0])); ?></h4>
+                                                <h4>Draw <?= date('jS F Y', strtotime(get_post_meta( get_the_id(), '_draw_date_and_time')[0])); ?></h4>
                                             <?php endif; ?>
                                         <?php else: ?>
                                             <h4>No Draw Date</h4>
@@ -61,19 +61,19 @@ class AllCompetitions
                                         <div class="countdown">
                                             <div class="count-item">
                                                 <div class="count-value e-m-days">00</div>
-                                                <label>DAYS</label>
+                                                <label>Days</label>
                                             </div>
                                             <div class="count-item">
                                                 <div class="count-value e-m-hours">00</div>
-                                                <label>HOUR</label>
+                                                <label>Hr</label>
                                             </div>
                                             <div class="count-item">
                                                 <div class="count-value e-m-minutes">00</div>
-                                                <label>MIN</label>
+                                                <label>Min</label>
                                             </div>
                                             <div class="count-item">
                                                 <div class="count-value e-m-seconds">00</div>
-                                                <label>SEC</label>
+                                                <label>Sec</label>
                                             </div>
                                         </div>
                                     </div>
@@ -92,7 +92,7 @@ class AllCompetitions
                                     <h4><?= $price; ?> per entry</h4>
                                 </div>
                                 <div class="short-desc-wrap">
-                                    <?= get_the_excerpt(); ?>
+                                    <?= get_the_title(); ?>
                                 </div>
                                 <div class="btn-wrap">
                                     <div class="btn-addtocart">Enter Now</div>
@@ -102,7 +102,7 @@ class AllCompetitions
                     </div>
                 <?php endwhile; wp_reset_query(); ?>
             </div>
-            <div class="featured-competition-viewall-btn">
+            <div class="competition-listing-viewall-btn">
                 <a href="<?= get_permalink( wc_get_page_id( 'shop' ) ) ?>" class="btn-viewall">VIEW ALL COMPETITIONS</a>
             </div>
         <?php endif; ?>
