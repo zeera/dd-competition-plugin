@@ -191,4 +191,41 @@ class CompetitionsBackendProcess extends AdminHelper
             }
         }
     }
+
+    public static function setWinnerPostType()
+    {
+        $labels = array(
+            'name'                => _x( 'Winners', 'Post Type General Name', '' ),
+            'singular_name'       => _x( 'Winners', 'Post Type Singular Name', '' ),
+            'menu_name'           => __( 'Dashboard', '' ),
+            'view_item'           => __( 'View Winners', '' ),
+            'add_new_item'        => __( 'Add New Winners', '' ),
+            'add_new'             => __( 'Add New', '' ),
+            'edit_item'           => __( 'Edit Winners', '' ),
+            'update_item'         => __( 'Update Winners', '' ),
+            'search_items'        => __( 'Search Winners', '' ),
+            'not_found'           => __( 'Not Found', '' ),
+            'not_found_in_trash'  => __( 'Not found in Trash', '' ),
+        );
+        $args = array(
+            'label'               => __( 'winners', '' ),
+            'description'         => __( 'Winners', '' ),
+            'labels'              => $labels,
+            'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields', ),
+            'hierarchical'        => false,
+            'public'              => true,
+            'show_ui'             => true,
+            'show_in_menu'        => true,
+            'show_in_nav_menus'   => true,
+            'show_in_admin_bar'   => true,
+            'menu_position'       => 3,
+            'can_export'          => true,
+            'has_archive'         => true,
+            'exclude_from_search' => false,
+            'publicly_queryable'  => true,
+            'capability_type'     => 'post',
+            'show_in_rest' => true,
+        );
+        register_post_type( 'competition-winners', $args );
+    }
 }

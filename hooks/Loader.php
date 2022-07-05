@@ -52,6 +52,7 @@ class Loader
         add_filter('manage_edit-product_columns', [ CompetitionsBackendProcess::class, 'showProductOrder'], 10, 2);
         add_filter('manage_product_posts_custom_column', [ CompetitionsBackendProcess::class, 'addCustomButton'], 10, 2);
         add_action('admin_init', [CompetitionsBackendProcess::class, 'createEntryListPage']);
+        add_action( 'admin_init', [CompetitionsBackendProcess::class, 'setWinnerPostType'], 0 );
         add_action( 'rest_api_init', [CompetitionsBackendProcess::class, 'exportApi'] );
 
         /** Woocmmerce Hooks that requires Woo Classes
@@ -63,9 +64,10 @@ class Loader
             add_action('woocommerce_product_data_panels', [ WooCommerceMetaBox::class, 'competionProductData']);
             add_action('woocommerce_process_product_meta', [ WooCommerceMetaBox::class, 'competitionProductDataStore']);
             add_action('admin_footer', [ WooCommerceMetaBox::class, 'enable_js_on_wc_product']);
-            add_action('woocommerce_before_add_to_cart_quantity', [ CompetitionProcess::class, 'drawDateTimeShow']);
+            add_action('woocommerce_before_add_to_cart_quantity', [ CompetitionProcess::class, 'setQuestion']);
             add_action('woocommerce_after_add_to_cart_quantity',  [ CompetitionProcess::class, 'setRangeQtySlider']);
             add_action( 'woocommerce_before_single_product', [ CompetitionProcess::class, 'setTopData' ] );
+            add_action( 'woocommerce_after_add_to_cart_button', [ CompetitionProcess::class, 'setCounter' ] );
             // add_action('woocommerce_after_add_to_cart_form', [ CompetitionProcess::class, 'countdownTimer']);
             add_action('wp_enqueue_scripts', [CompetitionProcess::class, 'cartScripts']);
             add_action( 'wp_head', [ CompetitionsBackendProcess::class, 'checkPage' ] );
