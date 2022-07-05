@@ -13,6 +13,7 @@ use WpDigitalDriveCompetitions\Shortcode\RelatedCompetitions\RelatedCompetitions
 
 use WpDigitalDriveCompetitions\Shortcode\AllCompetitions\AllCompetitions;
 use WpDigitalDriveCompetitions\Shortcode\EntryListsCompetition\EntryListsCompetition;
+use WpDigitalDriveCompetitions\Shortcode\EndingSoonCompetitions\EndingSoonCompetitions;
 
 /**
  * Shortcode Loader
@@ -39,12 +40,14 @@ class Loader
         wp_register_script('bootstrap-scripts', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/js/bootstrap.bundle.min.js?v=' . $version, array('jquery'), '', true);
         wp_register_script('datatable-scripts', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/js/dataTables.min.js?v=' . $version, array('jquery'), '', true);
         wp_register_script('datatable-bootstrap-script', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/js/dataTables.bootstrap5.min.js?v=' . $version, array('jquery'), '', true);
+        wp_register_script('competition-listing-scripts', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/js/competition-listing.js?v=' . $version, array('jquery'), '', true);
 
         add_shortcode( 'display_attributes', [self::class, "attributes"] );
         add_shortcode( 'featured-competitions', [self::class, "displayFeaturedCompetition"] );
         add_shortcode( 'all-competitions', [self::class, "displayAllCompetition"] );
         add_shortcode( 'related-competitions', [self::class, "displayRelatedCompetition"] );
         add_shortcode( 'entry-lists-competition', [self::class, "displayEntryListsCompetition"] );
+        add_shortcode( 'ending-soon-competitions', [self::class, "displayEndingSoonCompetition"] );
         add_shortcode( 'do-product-summary', [self::class, "doWooProductSummary"] );
     }
 
@@ -78,14 +81,15 @@ class Loader
         if(!wp_style_is('competition-listing-style')) {
             wp_enqueue_style("competition-listing-style");
         }
-        if(!wp_script_is('featured-competition-scripts')) {
-            wp_enqueue_script("featured-competition-scripts");
+        if(!wp_script_is('competition-listing-scripts')) {
+            wp_enqueue_script("competition-listing-scripts");
         }
         //A useful function to know
         $attr = shortcode_atts(array(
-            'per_page'        => '6',
-            'orderby'      => 'id',
-            'order'        => 'DESC',
+            'per_page'      => '6',
+            'orderby'       => 'id',
+            'order'         => 'DESC',
+            'hide_title'    => true,
             'heading_title' => 'All Competitions'
         ), $attr);
 
@@ -95,7 +99,7 @@ class Loader
         return $returnstring;
     }
 
-    public static function displayRelatedCompetition($attr){
+    public static function displayRelatedCompetition($attr) {
         if(!wp_style_is('competition-listing-style')) {
             wp_enqueue_style("competition-listing-style");
         }
@@ -111,6 +115,28 @@ class Loader
 
         $allCompetitions = new RelatedCompetitions;
         $returnstring = $allCompetitions->display($attr);
+
+        return $returnstring;
+    }
+
+    public static function displayEndingSoonCompetition($attr){
+        if(!wp_style_is('competition-listing-style')) {
+            wp_enqueue_style("competition-listing-style");
+        }
+        if(!wp_script_is('competition-listing-scripts')) {
+            wp_enqueue_script("competition-listing-scripts");
+        }
+        //A useful function to know
+        $attr = shortcode_atts(array(
+            'per_page'      => '6',
+            'orderby'       => 'id',
+            'order'         => 'DESC',
+            'hide_title'    => true,
+            'heading_title' => 'All Competitions'
+        ), $attr);
+
+        $endingSoonCompetitions = new EndingSoonCompetitions;
+        $returnstring = $endingSoonCompetitions->display($attr);
 
         return $returnstring;
     }

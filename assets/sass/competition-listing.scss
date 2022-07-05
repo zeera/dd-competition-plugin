@@ -34,7 +34,9 @@
           background: #34363A;
           border-radius: 10px;
           display: block;
-          padding: 13px 14px;
+          height: 100%;
+          padding: 13px 14px 88px;
+          position: relative;
           text-decoration: none;
           .competition-feat-img {
             margin-bottom: 10px;
@@ -44,8 +46,8 @@
             }
           }
           .competition-content {
-            padding-bottom: 74px;
-            position: relative;
+            // padding-bottom: 74px;
+            // position: relative;
             .draw-date-wrap {
               align-items: center;
               background: #F8BC00;

@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace WpDigitalDriveCompetitions\Shortcode\AllCompetitions;
+namespace WpDigitalDriveCompetitions\Shortcode\EndingSoonCompetitions;
 
 /**
- *Show All Competitions -- parameters are per_page='6', orderby='id', order='desc', hide_title=true & heading_title='Featured Competitions'
+ *Show Ending Soon Competitions -- parameters are per_page='6', orderby='id', order='desc', hide_title=true & heading_title='Competitions Ending Soon'
  */
-class AllCompetitions
+class EndingSoonCompetitions
 {
     public static function display($attr) {
         ob_start();
         extract($attr);
-
+        $future_date = date("Y/m/d", strtotime("+5 days"));
         $query = new \WP_Query( array(
             'post_type'           => 'product',
             'post_status'         => 'publish',
@@ -19,6 +19,15 @@ class AllCompetitions
             'posts_per_page'      => $per_page,
             'orderby'             => $orderby,
             'order'               => $order,
+            'meta_query' => array(
+                'relation' => 'AND',
+                    array(
+                        'key'     => '_draw_date_and_time',
+                        'value'   => array(date('Y/m/d'), $future_date),
+                        'compare' => 'BETWEEN',
+                        'type'    => 'date'
+                    )
+            )
         ) );
 ?>
     <div class="competition-listing-section">
