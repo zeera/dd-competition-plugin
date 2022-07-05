@@ -29,12 +29,14 @@ class FeaturedCompetitions
         ) );
 
 ?>
-    <div class='featured-competition-section'>
-        <div class="featured-competition-heading">
-            <h2 class="section-title"><?= $heading_title; ?></h2>
-        </div>
+    <div class="competition-listing-section">
+        <?php if(!$hide_title): ?>
+            <div class="competition-list-heading">
+                <h2 class="section-title"><?= $heading_title; ?></h2>
+            </div>
+        <?php endif; ?>
         <?php if( $query->have_posts() ): ?>
-            <div class="featured-competitions-wrapper">
+            <div class="competition-listing-wrapper">
                 <?php while ($query->have_posts()) : $query->the_post(); ?>
                     <?php
                         $product = wc_get_product( get_the_id() );
@@ -46,20 +48,32 @@ class FeaturedCompetitions
                         if($stock_qty != "--") {
                             $sales_percentage = ((int)$total_sold/(int)$stock_qty) * 100;
                         }
+                        $competitionStatus = "";
+                        if(date("m/d/Y g:i a") > date('m/d/Y g:i a', strtotime(get_post_meta( get_the_id(), '_draw_date_and_time')[0]))) {
+                            $competitionStatus = "closed";
+                        } elseif(date("m/d/Y") == date('m/d/Y', strtotime(get_post_meta( get_the_id(), '_draw_date_and_time')[0]))) {
+                            $competitionStatus = "draw-today";
+                        } elseif(date("m/d/Y", strtotime("+ 1 day")) == date('m/d/Y', strtotime(get_post_meta( get_the_id(), '_draw_date_and_time')[0]))) {
+                            $competitionStatus = "draw-tomorrow";
+                        }
                     ?>
-                    <div class="competition-item" data-enddate="<?= $end_date; ?>">
+                    <div class="competition-item" data-enddate="<?= date('m/d/Y g:i a', strtotime($end_date)); ?>">
                         <a href="<?= get_the_permalink(); ?>" class="competition-box">
                             <div class="competition-feat-img">
                                 <?= wp_get_attachment_image( $product->get_image_id(), 'full' ); ?>
                             </div>
                             <div class="competition-content">
                                 <?php if($product->get_type() == 'competition'): ?>
-                                    <div class="draw-date-wrap">
+                                    <div class="draw-date-wrap <?= $competitionStatus; ?>">
                                         <?php if(get_post_meta(get_the_id(), '_draw_date_and_time')): ?>
-                                            <?php if(date("D jS M") > date('D jS M', strtotime(get_post_meta( get_the_id(), '_draw_date_and_time')[0]))): ?>
-                                                <h4>EXPIRED</h4>
+                                            <?php if($competitionStatus == "closed"): ?>
+                                                <h4>CLOSED</h4>
+                                            <?php elseif($competitionStatus == "draw-today"): ?>
+                                                <h4>DRAW TODAY</h4>
+                                            <?php elseif($competitionStatus == "draw-tomorrow"): ?>
+                                                <h4>DRAW TOMORROW</h4>
                                             <?php else: ?>
-                                                <h4>Draw <?= date('D jS M', strtotime(get_post_meta( get_the_id(), '_draw_date_and_time')[0])); ?></h4>
+                                                <h4>Draw <?= date('D d F', strtotime(get_post_meta( get_the_id(), '_draw_date_and_time')[0])); ?></h4>
                                             <?php endif; ?>
                                         <?php else: ?>
                                             <h4>No Draw Date</h4>
@@ -69,19 +83,19 @@ class FeaturedCompetitions
                                         <div class="countdown">
                                             <div class="count-item">
                                                 <div class="count-value e-m-days">00</div>
-                                                <label>DAYS</label>
+                                                <label>Days</label>
                                             </div>
                                             <div class="count-item">
                                                 <div class="count-value e-m-hours">00</div>
-                                                <label>HOUR</label>
+                                                <label>Hr</label>
                                             </div>
                                             <div class="count-item">
                                                 <div class="count-value e-m-minutes">00</div>
-                                                <label>MIN</label>
+                                                <label>Min</label>
                                             </div>
                                             <div class="count-item">
                                                 <div class="count-value e-m-seconds">00</div>
-                                                <label>SEC</label>
+                                                <label>Sec</label>
                                             </div>
                                         </div>
                                     </div>
@@ -100,19 +114,24 @@ class FeaturedCompetitions
                                     <h4><?= $price; ?> per entry</h4>
                                 </div>
                                 <div class="short-desc-wrap">
-                                    <?= get_the_excerpt(); ?>
+                                    <?= get_the_title(); ?>
                                 </div>
+                                <?php if(get_field('extra_info')): ?>
+                                    <div class="extras">
+                                        <h4><?= get_field('extra_info'); ?></h4>
+                                    </div>
+                                <?php endif; ?>
                                 <div class="btn-wrap">
-                                    <div class="btn-addtocart">Enter Now</div>
+                                    <div class="btn-addtocart <?= ($competitionStatus == "closed") ? 'closed' : ''; ?>"><?= ($competitionStatus == "closed") ? 'Closed' : 'Enter Now'; ?></div>
                                 </div>
                             </div>
                         </a>
                     </div>
                 <?php endwhile; wp_reset_query(); ?>
             </div>
-            <div class="featured-competition-viewall-btn">
-                <a href="<?= get_permalink( wc_get_page_id( 'shop' ) ) ?>" class="btn-viewall">VIEW ALL COMPETITIONS</a>
-            </div>
+            <!-- <div class="competition-listing-viewall-btn">
+                <a href="<?php //get_permalink( wc_get_page_id( 'shop' ) ) ?>" class="btn-viewall">VIEW ALL COMPETITIONS</a>
+            </div> -->
         <?php endif; ?>
     </div>
 <?php

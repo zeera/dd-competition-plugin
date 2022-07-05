@@ -57,17 +57,18 @@ class Loader
     }
 
     public static function displayFeaturedCompetition($attr){
-        if(!wp_style_is('featured-competition-style')) {
-            wp_enqueue_style("featured-competition-style");
+        if(!wp_style_is('competition-listing-style')) {
+            wp_enqueue_style("competition-listing-style");
         }
-        if(!wp_script_is('featured-competition-scripts')) {
-            wp_enqueue_script("featured-competition-scripts");
+        if(!wp_script_is('competition-listing-scripts')) {
+            wp_enqueue_script("competition-listing-scripts");
         }
         //A useful function to know
         $attr = shortcode_atts(array(
             'per_page'        => '6',
             'orderby'      => 'id',
             'order'        => 'DESC',
+            'hide_title'    => true,
             'heading_title' => 'Featured Competitions'
         ), $attr);
 
@@ -132,7 +133,7 @@ class Loader
             'orderby'       => 'id',
             'order'         => 'DESC',
             'hide_title'    => true,
-            'heading_title' => 'All Competitions'
+            'heading_title' => 'Competitions Ending Soon'
         ), $attr);
 
         $endingSoonCompetitions = new EndingSoonCompetitions;
