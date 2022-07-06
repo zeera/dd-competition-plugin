@@ -33,7 +33,7 @@ class Loader
         wp_register_style('featured-competition-style', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/css/featured-competitions.css?v=' . $version);
         wp_register_style('bootstrap-style', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/css/bootstrap.min.css?v=' . $version, true);
         wp_register_style('entrylists-datatable-style', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/css/dataTables.min.css?v=' . $version, true);
-        wp_register_style('entry-lists-style', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/css/entry-lists.css?v=' . $version);
+        wp_register_style('entry-lists-style', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/css/compiled/entry-lists.css?v=' . $version);
         wp_register_style('competition-listing-style', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/css/compiled/competition-listing.css?v=' . $version);
 
         wp_register_script('featured-competition-scripts', WPDIGITALDRIVE_COMPETITIONS_URL . 'assets/js/featured-competitions.js?v=' . $version, array('jquery'), '', true);
@@ -166,6 +166,7 @@ class Loader
             'per_page'        => '6',
             'orderby'      => 'id',
             'order'        => 'DESC',
+            'hide_title'    => true,
             'heading_title' => 'Entry Lists'
         ), $attr);
 

@@ -1,0 +1,97 @@
+@media screen {
+  .entry-lists-competition-section {
+    margin: 0 auto;
+    max-width: 1320px;
+    .entry-lists-competition-heading {
+      margin: 0;
+      text-align: left;
+      .section-title {
+        color: #121315;
+        font-family: inherit;
+        font-size: 36px;
+        font-weight: bold;
+        line-height: 43.2px;
+        text-transform: uppercase;
+      }
+    }
+    .entry-lists-competition-wrapper {
+      justify-content: center;
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 -15px;
+      .entry-list-item {
+        flex: 0 1 auto;
+        margin-bottom: 30px;
+        padding: 0 15px;
+        width: 100%;
+        @media (min-width: 768px) {
+          width: 50%;
+        }
+        @media (min-width: 992px) {
+          width: 33.33%;
+        }
+        .entry-list-box {
+          background-color: #34363A;
+          border-radius: 10px;
+          display: block;
+          height: 100%;
+          padding: 13px 14px 88px;
+          position: relative;
+          text-decoration: none;
+          .entry-list-feat-img {
+            margin-bottom: 23px;
+            img {
+              height: auto;
+              width: 100%;
+            }
+          }
+          .entry-list-content {
+            .entry-list-title {
+              color: #FFFFFF;
+              font-family: 'Barlow Condensed';
+              font-style: normal;
+              font-weight: 700;
+              font-size: 28px;
+              line-height: 28px;
+              margin-bottom: 14px;
+              text-align: center;
+            }
+            h4 {
+              color: #FFFFFF;
+              font-family: 'Barlow Condensed';
+              font-style: normal;
+              font-weight: 400;
+              font-size: 18px;
+              line-height: 15px;
+              text-align: center;
+            }
+            .btn-wrap {
+              bottom: 13px;
+              left: 14px;
+              position: absolute;
+              right: 14px;
+              .btn-download {
+                align-items: center;
+                background: #52B77B;
+                border-radius: 6px;
+                color: #FFFFFF;
+                display: flex;
+                font-family: 'Barlow Condensed';
+                font-style: normal;
+                font-weight: 700;
+                font-size: 18px;
+                line-height: 22px;
+                height: 64px;
+                justify-content: center;
+                padding: 10px 15px;
+                text-align: center;
+                text-transform: uppercase;
+                width: 100%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
