@@ -52,12 +52,22 @@ class Loader
         add_filter('manage_edit-product_columns', [ CompetitionsBackendProcess::class, 'showProductOrder'], 10, 2);
         add_filter('manage_product_posts_custom_column', [ CompetitionsBackendProcess::class, 'addCustomButton'], 10, 2);
         add_action('admin_init', [CompetitionsBackendProcess::class, 'createEntryListPage']);
-        add_action( 'admin_init', [CompetitionsBackendProcess::class, 'setWinnerPostType'], 0 );
+        add_action('admin_init', [CompetitionsBackendProcess::class, 'createWinnerPage']);
+        add_action( 'init', [CompetitionsBackendProcess::class, 'setWinnerPostType'], 10 );
         add_action( 'rest_api_init', [CompetitionsBackendProcess::class, 'exportApi'] );
 
         /** Woocmmerce Hooks that requires Woo Classes
          * ===================================== */
         if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')))) {
+            add_action( 'woocommerce_register_form_start', [ CompetitionsBackendProcess::class, 'setExtraRegistrationFields'] );
+            add_action( 'woocommerce_register_post', [ CompetitionsBackendProcess::class, 'validateExtraRegistrationFields'], 10, 3 );
+            add_action( 'woocommerce_created_customer', [ CompetitionsBackendProcess::class, 'saveExtraRegistrationFields'] );
+            add_action( 'woocommerce_edit_account_form', [ CompetitionsBackendProcess::class, 'setBdayField'] );
+            add_action( 'woocommerce_save_account_details_errors', [ CompetitionsBackendProcess::class, 'validateBdayField'], 10, 1 );
+            add_action( 'show_user_profile', [ CompetitionsBackendProcess::class, 'addUserBdayField'], 10, 1 );
+            add_action( 'edit_user_profile', [ CompetitionsBackendProcess::class, 'addUserBdayField'], 10, 1 );
+            add_action( 'personal_options_update', [ CompetitionsBackendProcess::class, 'saveUserBdayField'], 10, 1 );
+            add_action( 'edit_user_profile_update', [ CompetitionsBackendProcess::class, 'saveUserBdayField'], 10, 1 );
             add_action('woocommerce_loaded', [ WooCommerceMetaBox::class, 'loadPlugin']);
             add_action('product_type_selector', [ WooCommerceMetaBox::class, 'add_competition_product_type']);
             add_action('woocommerce_product_data_tabs', [ WooCommerceMetaBox::class, 'competitionTab'], 10, 1);

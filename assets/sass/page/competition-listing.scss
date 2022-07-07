@@ -1,3 +1,4 @@
+@import "../variables";
 @media screen {
   .competition-listing-section {
     margin: 0 auto;
@@ -38,7 +39,9 @@
           padding: 13px 14px 88px;
           position: relative;
           text-decoration: none;
-
+          &.winners {
+            padding: 13px 14px 35px;
+          }
           .competition-feat-img {
             margin-bottom: 10px;
 
@@ -51,6 +54,44 @@
           .competition-content {
             // padding-bottom: 74px;
             // position: relative;
+            h3 {
+              font-family: $fontBarlow;
+              font-size: 20px;
+              line-height: 22px;
+              color: #fff;
+              font-weight: bold;
+              margin-top: 30px;
+            }
+            .details {
+              h4 {
+                font-family: $fontBarlow;
+                font-weight: bold;
+                color: #DFCD83;
+                font-size: 16px;
+                line-height: 22px;
+                text-transform: uppercase;
+                margin:0;
+                padding:0;
+              }
+              h5 {
+                font-size: 16px;
+                line-height: 22px;
+                color: #fff;
+                font-family: $fontBarlow;
+                margin:0;
+                padding:0;
+                font-weight: 400;
+              }
+              h6 {
+                font-size: 16px;
+                line-height: 22px;
+                color: #fff;
+                font-family: $fontBarlow;
+                font-weight: 400;
+                margin:0;
+                padding:0;
+              }
+            }
             .draw-date-wrap {
               align-items: center;
               background: #F8BC00;
@@ -287,6 +328,31 @@
         text-decoration: none;
         text-transform: uppercase;
         width: 100%;
+      }
+    }
+  }
+  .pagination {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .page-numbers {
+      width: 25.36px;
+      height: 25.36px;
+      text-align: center;
+      display:flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 100%;
+      background-color: transparent;
+      border: 1px solid #4E4E4E;
+      color: #ffff;
+      font-size:16px;
+      font-weight: bold;
+      font-family: 'Poppins';
+      margin:0 7px;
+      &.current {
+        background-color: #A1945D;
       }
     }
   }

@@ -46,6 +46,7 @@ class CompetitionsBackendProcess extends AdminHelper
 
         return $page;
     }
+
     public static function createEntryListPage()
     {
 
@@ -56,6 +57,24 @@ class CompetitionsBackendProcess extends AdminHelper
                 'post_title'   => 'Entry List',
                 'post_name' => 'entry-lists',
                 'post_content' => '[entry-lists-competition]',
+                'post_status'  => 'publish',
+                'post_author'  => 1,
+                'post_type'    => 'page'
+            );
+            wp_insert_post( $my_post );
+        }
+    }
+
+    public static function createWinnerPage()
+    {
+
+        $self = new self;
+        $page = $self::getPage('winners');
+        if ( count($page) <= 0 ) {
+            $my_post = array(
+                'post_title'   => 'Winners',
+                'post_name' => 'winners',
+                'post_content' => '[all-winners]',
                 'post_status'  => 'publish',
                 'post_author'  => 1,
                 'post_type'    => 'page'
@@ -195,9 +214,9 @@ class CompetitionsBackendProcess extends AdminHelper
     public static function setWinnerPostType()
     {
         $labels = array(
-            'name'                => _x( 'Winners', 'Post Type General Name', '' ),
-            'singular_name'       => _x( 'Winners', 'Post Type Singular Name', '' ),
-            'menu_name'           => __( 'Dashboard', '' ),
+            'name'                => __( 'Winners', 'Post Type General Name', '' ),
+            'singular_name'       => __( 'Winners', 'Post Type Singular Name', '' ),
+            'menu_name'           => __( 'Winners', '' ),
             'view_item'           => __( 'View Winners', '' ),
             'add_new_item'        => __( 'Add New Winners', '' ),
             'add_new'             => __( 'Add New', '' ),
@@ -208,17 +227,21 @@ class CompetitionsBackendProcess extends AdminHelper
             'not_found_in_trash'  => __( 'Not found in Trash', '' ),
         );
         $args = array(
-            'label'               => __( 'winners', '' ),
+            'labels' => array(
+                'name' => __( 'Winners' ),
+                'singular_name' => __( 'Winners' )
+            ),
             'description'         => __( 'Winners', '' ),
             'labels'              => $labels,
             'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields', ),
-            'hierarchical'        => false,
+            'hierarchical'        => true,
             'public'              => true,
             'show_ui'             => true,
             'show_in_menu'        => true,
             'show_in_nav_menus'   => true,
             'show_in_admin_bar'   => true,
-            'menu_position'       => 3,
+            'menu_position'       => 5,
+            'menu_icon'       => 'dashicons-buddicons-groups',
             'can_export'          => true,
             'has_archive'         => true,
             'exclude_from_search' => false,
@@ -226,6 +249,123 @@ class CompetitionsBackendProcess extends AdminHelper
             'capability_type'     => 'post',
             'show_in_rest' => true,
         );
-        register_post_type( 'competition-winners', $args );
+        register_post_type( 'competition_winners', $args );
     }
+
+    public static function setExtraRegistrationFields()
+    {
+        ?>
+            <p class="form-row form-row-first">
+                <label
+                    for="reg_billing_first_name">
+                    <?php _e( 'First name', 'woocommerce' ); ?>
+                    <span class="required">*</span>
+                </label>
+                <input
+                    type="text"
+                    class="input-text"
+                    name="billing_first_name"
+                    id="reg_billing_first_name"
+                    value="<?php if ( ! empty( $_POST['billing_first_name'] ) ) esc_attr_e( $_POST['billing_first_name'] ); ?>" />
+            </p>
+            <p class="form-row form-row-last">
+                <label
+                    for="reg_billing_last_name">
+                    <?php _e( 'Last name', 'woocommerce' ); ?>
+                    <span class="required">*</span>
+                </label>
+                <input
+                    type="text"
+                    class="input-text"
+                    name="billing_last_name"
+                    id="reg_billing_last_name"
+                    value="<?php if ( ! empty( $_POST['billing_last_name'] ) ) esc_attr_e( $_POST['billing_last_name'] ); ?>" />
+            </p>
+            <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                <label
+                    for="birthday_field">
+                    <?php _e( 'Date of Birth', 'woocommerce' ); ?>
+                    <span class="required">*</span>
+                </label>
+                <input
+                    type="date"
+                    name="birthday_field"
+                    value="<?= $_POST['birthday_field']; ?>"
+                    class="regular-text"/>
+            </p>
+            <div class="clear"></div>
+        <?php
+    }
+
+    public static function validateExtraRegistrationFields( $username, $email, $validation_errors )
+    {
+        if ( isset( $_POST['billing_first_name'] ) && empty( $_POST['billing_first_name'] ) ) {
+            $validation_errors->add( 'billing_first_name_error', __( '<strong>Error</strong>: First name is required!', 'woocommerce' ) );
+        }
+        if ( isset( $_POST['billing_last_name'] ) && empty( $_POST['billing_last_name'] ) ) {
+            $validation_errors->add( 'billing_last_name_error', __( '<strong>Error</strong>: Last name is required!.', 'woocommerce' ) );
+        }
+        if ( isset( $_POST['birthday_field'] ) && empty( $_POST['birthday_field'] ) ) {
+            $validation_errors->add( 'birthday_field_error', __( '<strong>Error</strong>: Date of Birth is required!.', 'woocommerce' ) );
+        }
+        return $validation_errors;
+    }
+
+    public static function  saveExtraRegistrationFields( $customer_id )
+    {
+        if ( isset( $_POST['billing_first_name'] ) ) {
+            //First name field which is by default
+            update_user_meta( $customer_id, 'first_name', sanitize_text_field( $_POST['billing_first_name'] ) );
+            // First name field which is used in WooCommerce
+            update_user_meta( $customer_id, 'billing_first_name', sanitize_text_field( $_POST['billing_first_name'] ) );
+        }
+        if ( isset( $_POST['billing_last_name'] ) ) {
+            // Last name field which is by default
+            update_user_meta( $customer_id, 'last_name', sanitize_text_field( $_POST['billing_last_name'] ) );
+            // Last name field which is used in WooCommerce
+            update_user_meta( $customer_id, 'billing_last_name', sanitize_text_field( $_POST['billing_last_name'] ) );
+        }
+        if ( isset( $_POST['birthday_field'] ) ) {
+            update_user_meta( $customer_id, 'birthday_field', sanitize_text_field( $_POST['birthday_field'] ) );
+        }
+    }
+
+    public static function  setBdayField()
+    {
+        woocommerce_form_field( 'birthday_field', array(
+            'type'        => 'date',
+            'label'       => __( 'My Birth Date', 'woocommerce' ),
+            'placeholder' => __( 'Date of Birth', 'woocommerce' ),
+            'required'    => true,
+        ), get_user_meta( get_current_user_id(), 'birthday_field', true ));
+    }
+
+    public static function validateBdayField( $args )
+    {
+        if ( isset($_POST['birthday_field']) && empty($_POST['birthday_field']) ) {
+            $args->add( 'error', __( 'Please provide a birth date', 'woocommerce' ) );
+        }
+    }
+
+    public static function addUserBdayField( $user )
+    {
+        ?>
+            <h3><?php _e('Birthday','woocommerce' ); ?></h3>
+            <table class="form-table">
+                <tr>
+                    <th><label for="birthday_field"><?php _e( 'Date of Birth', 'woocommerce' ); ?></label></th>
+                    <td><input type="date" name="birthday_field" value="<?php echo esc_attr( get_the_author_meta( 'birthday_field', $user->ID )); ?>" class="regular-text" /></td>
+                </tr>
+            </table>
+            <br />
+        <?php
+    }
+
+    public static function saveUserBdayField( $user_id )
+    {
+        if( ! empty($_POST['birthday_field']) ) {
+            update_user_meta( $user_id, 'birthday_field', sanitize_text_field( $_POST['birthday_field'] ) );
+        }
+    }
+
 }
