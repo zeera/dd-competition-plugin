@@ -22,10 +22,12 @@
       margin: 0 -15px;
       .competition-item {
         flex: 0 1 auto;
-        margin-bottom: 20px;
-        padding: 0 10px;
-        width: 100%;
+        margin-bottom: 10px;
+        padding: 0 4px;
+        width: 50%;
         @media (min-width: 768px) {
+          margin-bottom: 20px;
+          padding: 0 10px;
           width: 50%;
         }
         @media (min-width: 992px) {
@@ -36,24 +38,26 @@
           border-radius: 10px;
           display: block;
           height: 100%;
-          padding: 13px 14px 88px;
+          padding: 4px 4px 33px;
           position: relative;
           text-decoration: none;
+          @media (min-width: 768px) {
+            padding: 13px 14px 88px;
+          }
           &.winners {
             padding: 13px 14px 35px;
           }
           .competition-feat-img {
-            margin-bottom: 10px;
-
+            @media (min-width: 768px) {
+              margin-bottom: 10px;
+            }
             img {
+              border-radius: 5px;
               height: auto;
               width: 100%;
             }
           }
-
           .competition-content {
-            // padding-bottom: 74px;
-            // position: relative;
             h3 {
               font-family: $fontBarlow;
               font-size: 20px;
@@ -98,8 +102,10 @@
               border-radius: 6px;
               display: flex;
               justify-content: center;
-              padding: 4px 5px 5px;
-
+              padding: 0 5px;
+              @media (min-width: 768px) {
+                padding: 4px 5px 5px;
+              }
               &.closed {
                 background: #646464;
               }
@@ -115,12 +121,16 @@
               h4 {
                 color: #fff;
                 font-family: 'Barlow Condensed';
-                font-size: 16px;
+                font-size: 10px;
                 font-weight: 700;
                 line-height: 18px;
                 margin: 0;
                 text-align: center;
                 text-transform: uppercase;
+                @media (min-width: 768px) {
+                  font-size: 16px;
+                  line-height: 18px;
+                }
               }
             }
 
@@ -145,9 +155,13 @@
                     font-family: 'Barlow Condensed';
                     font-style: normal;
                     font-weight: 700;
-                    font-size: 25px;
-                    line-height: 24px;
+                    font-size: 12px;
+                    line-height: 12px;
                     text-align: center;
+                    @media (min-width: 768px) {
+                      font-size: 25px;
+                      line-height: 24px;
+                    }
                   }
 
                   label {
@@ -155,10 +169,13 @@
                     font-family: 'Barlow';
                     font-style: normal;
                     font-weight: 400;
-                    font-size: 11px;
+                    font-size: 8px;
                     line-height: 11px;
                     text-align: center;
                     text-transform: capitalize;
+                    @media (min-width: 768px) {
+                      font-size: 11px;
+                    }
                   }
                 }
               }
@@ -166,28 +183,29 @@
 
             .sold-wrap {
               padding: 14px 0 21px;
-
               .progress-wrapper {
                 background: linear-gradient(0deg, #666666, #666666), #E7E7E7;
                 border-radius: 2px;
                 overflow: hidden;
                 position: relative;
-
                 .mini-label {
                   color: #FFFFFF;
                   font-family: 'Barlow';
                   font-style: normal;
                   font-weight: 700;
-                  font-size: 13px;
-                  line-height: 13px;
+                  font-size: 8px;
+                  line-height: 8px;
                   text-align: right;
                   position: absolute;
                   right: 5px;
                   top: 50%;
                   transform: translateY(-50%);
                   z-index: 50;
+                  @media (min-width: 768px) {
+                    font-size: 13px;
+                    line-height: 13px;
+                  }
                 }
-
                 .progress-bar {
                   background: linear-gradient(0deg, #DFCD83, #DFCD83), #E7E7E7;
                   border-radius: 2px;
@@ -201,19 +219,22 @@
                   text-align: center;
                   white-space: nowrap;
                   width: 0;
-
                   .percentage-marker {
                     color: #000000;
                     font-family: 'Barlow';
                     font-style: normal;
                     font-weight: 700;
-                    font-size: 13px;
+                    font-size: 8px;
                     left: 50%;
-                    line-height: 13px;
+                    line-height: 8px;
                     position: absolute;
                     text-align: center;
                     top: 50%;
                     transform: translate(-50%, -50%);
+                    @media (min-width: 768px) {
+                      font-size: 13px;
+                      line-height: 13px;
+                    }
                   }
                 }
               }
@@ -227,11 +248,14 @@
                 font-family: 'Barlow Condensed';
                 font-style: normal;
                 font-weight: 400;
-                font-size: 18px;
+                font-size: 15px;
                 line-height: 15px;
                 margin: 0;
                 text-align: center;
                 text-transform: lowercase;
+                @media (min-width: 768px) {
+                  font-size: 18px;
+                }
               }
 
               span {
@@ -239,11 +263,14 @@
                 font-family: 'Barlow Condensed';
                 font-style: normal;
                 font-weight: 700;
-                font-size: 28px;
+                font-size: 23px;
                 line-height: 15px;
                 margin: 0;
                 text-align: center;
                 text-transform: uppercase;
+                @media (min-width: 768px) {
+                  font-size: 28px;
+                }
               }
             }
 
@@ -252,34 +279,49 @@
               font-family: 'Barlow Condensed';
               font-style: normal;
               font-weight: 700;
-              font-size: 28px;
-              line-height: 28px;
+              font-size: 13px;
+              line-height: 13px;
               margin-top: 10px;
               text-align: center;
+              @media (min-width: 768px) {
+                font-size: 28px;
+                line-height: 28px;
+              }
             }
 
             .extras {
               background: #666666;
               border-radius: 6px;
               margin-top: 20px;
-              padding: 4px 10px 5px;
+              padding: 0 10px 0;
+              @media (min-width: 768px) {
+                padding: 4px 10px 5px;
+              }
               h4 {
                 color: #A6A6A6;
                 font-family: 'Barlow Condensed';
                 font-style: normal;
                 font-weight: 700;
-                font-size: 16px;
+                font-size: 8px;
                 line-height: 18px;
                 margin: 0;
                 text-align: center;
+                @media (min-width: 768px) {
+                  font-size: 16px;
+                }
               }
             }
 
             .btn-wrap {
-              bottom: 13px;
-              left: 14px;
+              bottom: 5px;
+              left: 4px;
               position: absolute;
-              right: 14px;
+              right: 4px;
+              @media (min-width: 768px) {
+                bottom: 13px;
+                left: 14px;
+                right: 14px;
+              }
               .btn-addtocart {
                 align-items: center;
                 background: #52B77B;
@@ -289,15 +331,20 @@
                 font-family: 'Barlow Condensed';
                 font-style: normal;
                 font-weight: 700;
-                font-size: 18px;
-                line-height: 22px;
-                height: 64px;
+                font-size: 10px;
+                line-height: 12px;
+                height: 25px;
                 justify-content: center;
-                padding: 10px 15px;
+                padding: 6px 4px;
                 text-align: center;
                 text-transform: uppercase;
                 width: 100%;
-
+                @media (min-width: 768px) {
+                  font-size: 18px;
+                  line-height: 22px;
+                  height: 64px;
+                  padding: 10px 15px;
+                }
                 &.closed {
                   background: #646464;
                   pointer-events: none;
