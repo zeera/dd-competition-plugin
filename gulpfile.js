@@ -22,10 +22,10 @@ gulp.task('page-sass', function () {
         let parentFolder = path.dirname(file.dirname)
         file.dirname = path.join(parentFolder, 'compiled');
     }))
-    .pipe( pxtorem( {
-        rootValue:16,
-        propList: ['font', 'font-size', 'line-height', 'letter-spacing','padding', 'padding-top', 'padding-right', 'padding-bottom', 'padding-left', 'margin', 'margin-top', 'margin-right', 'margin-bottom', 'margin-left', 'width', 'height','border','border-radius', 'border-width', 'border-top', 'border-left', 'border-right', 'border-bottom', 'max-width', 'min-width', 'left', 'top', 'bottom', 'right'],
-    } ) )
+    // .pipe( pxtorem( {
+    //     rootValue:16,
+    //     propList: ['font', 'font-size', 'line-height', 'letter-spacing','padding', 'padding-top', 'padding-right', 'padding-bottom', 'padding-left', 'margin', 'margin-top', 'margin-right', 'margin-bottom', 'margin-left', 'width', 'height','border','border-radius', 'border-width', 'border-top', 'border-left', 'border-right', 'border-bottom', 'max-width', 'min-width', 'left', 'top', 'bottom', 'right'],
+    // } ) )
     .pipe( gulp.dest( "assets/css" ) );
 });
 

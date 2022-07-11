@@ -28,7 +28,7 @@ class AllWinners
             <?php if( $query->have_posts() ): ?>
                 <div class="competition-listing-wrapper">
                     <?php while ($query->have_posts()) : $query->the_post(); ?>
-                        <div class="competition-item">
+                        <div class="competition-item winner-item">
                             <div class="competition-box winners">
                                 <div class="competition-feat-img">
                                     <?= wp_get_attachment_image(get_post_thumbnail_id( get_the_ID() ) , 'full' ); ?>
